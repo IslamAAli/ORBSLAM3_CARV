@@ -92,3 +92,15 @@ borrar/*
 
 */ExecMean.txt
 
+# build folders
+build/*
+Thirdparty/DBoW2/build/*
+Thirdparty/g2o/build/*
+Examples/ROS/ORB_CARV_Pub/build/*
+
+# large files
+Vocabulary/*
+tools/*
+
+#vs code files
+.vscode/*
