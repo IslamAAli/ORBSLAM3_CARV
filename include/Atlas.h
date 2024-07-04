@@ -43,6 +43,11 @@ class Frame;
 class KannalaBrandt8;
 class Pinhole;
 
+// ========== CARV ==========
+// carv: declaration
+class Modeler;
+// ========== CARV ==========
+
 //BOOST_CLASS_EXPORT_GUID(Pinhole, "Pinhole")
 //BOOST_CLASS_EXPORT_GUID(KannalaBrandt8, "KannalaBrandt8")
 
@@ -138,6 +143,14 @@ public:
     long unsigned int GetNumLivedKF();
 
     long unsigned int GetNumLivedMP();
+
+    // ========== CARV ==========
+    // carv: pointer to modeler
+    Modeler* mpModeler;
+    void SetModeler(Modeler* pModeler){
+        mpModeler = pModeler;
+    }
+    // ========== CARV ==========
 
 protected:
 

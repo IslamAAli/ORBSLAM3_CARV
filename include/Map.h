@@ -38,8 +38,10 @@ class KeyFrame;
 class Atlas;
 class KeyFrameDatabase;
 
+// ========== CARV ==========
 // carv: declaration
 class Modeler;
+// ========== CARV ==========
 
 class Map
 {
