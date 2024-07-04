@@ -16,6 +16,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__STDC_CONSTANT_MACROS -DGL_GLEXT_PROT
 # suppress all warnings for cleaner build
 add_definitions(-w)
 add_definitions(-Wno-deprecated)
+add_definitions(-Wno-int-in-bool-context)
 # ========== CARV ==========
 
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
