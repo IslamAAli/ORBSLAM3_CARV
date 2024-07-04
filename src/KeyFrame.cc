@@ -1231,7 +1231,7 @@ KeyFrame::KeyFrame(KeyFrame *pKF):
         mBowVec(pKF->mBowVec), mFeatVec(pKF->mFeatVec), mnScaleLevels(pKF->mnScaleLevels), mfScaleFactor(pKF->mfScaleFactor),
         mfLogScaleFactor(pKF->mfLogScaleFactor), mvScaleFactors(pKF->mvScaleFactors), mvLevelSigma2(pKF->mvLevelSigma2),
         mvInvLevelSigma2(pKF->mvInvLevelSigma2), mnMinX(pKF->mnMinX), mnMinY(pKF->mnMinY), mnMaxX(pKF->mnMaxX),
-        mnMaxY(pKF->mnMaxY), mK(pKF->mK), mvpMapPoints(pKF->mvpMapPoints), mpKeyFrameDB(pKF->mpKeyFrameDB),
+        mnMaxY(pKF->mnMaxY), mK_(pKF->mK_), mvpMapPoints(pKF->mvpMapPoints), mpKeyFrameDB(pKF->mpKeyFrameDB),
         mpORBvocabulary(pKF->mpORBvocabulary), mbFirstConnection(pKF->mbFirstConnection), mpParent(pKF->mpParent),
         mbNotErase(pKF->mbNotErase),
         mbToBeErased(pKF->mbToBeErased), mbBad(pKF->mbBad), mHalfBaseline(pKF->mHalfBaseline), mpMap(pKF->mpMap)
