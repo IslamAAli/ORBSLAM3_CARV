@@ -132,7 +132,7 @@ Eigen::Vector3f MapPoint::GetWorldPos() {
 }
 
 // ========== CARV ==========
-cv::Mat MapPoint::GetWorldPos() {
+cv::Mat MapPoint::GetWorldPosCV() {
     unique_lock<mutex> lock(mMutexPos);
     // Create a cv::Mat and set its values
     cv::Mat mat(3, 1, CV_32F);

@@ -52,8 +52,8 @@ namespace ORB_SLAM3 {
         VirtualLineSegment(MapPoint* pMPs, MapPoint* pMPe){
             mpMPStart = pMPs;
             mpMPEnd = pMPe;
-            mStart = cv::Point3f(mpMPStart->GetWorldPos());
-            mEnd = cv::Point3f(mpMPEnd->GetWorldPos());
+            mStart = cv::Point3f(mpMPStart->GetWorldPosCV());
+            mEnd = cv::Point3f(mpMPEnd->GetWorldPosCV());
         }
 
         bool operator==(const VirtualLineSegment& rhs){
