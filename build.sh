@@ -10,7 +10,7 @@ cd ../../EDLines
 echo "Configuring and building Thirdparty/EDLines ..."
 make
 
-cd ../../g2o
+cd ../g2o
 echo "Configuring and building Thirdparty/g2o ..."
 
 mkdir build
