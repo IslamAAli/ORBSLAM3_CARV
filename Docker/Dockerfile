@@ -98,10 +98,10 @@ RUN apt-get update && apt-get install -y \
 RUN echo "[Dockerfile Info] Installing OPENCV ......"
 RUN cd /opt && \
 	wget "$OPENCV_DOWNLOAD_URL" && \
-	unzip 3.4.1.zip && \
-	cd opencv-3.4.1 && \
+	unzip "$OPENCV_VERSION".zip && \
+	cd "$OpenCV_DIR" && \
 	mkdir build
-RUN cd /opt/opencv-3.4.1/build && \ 
+RUN cd /opt/"$OpenCV_DIR"/build && \ 
 	cmake -D CMAKE_BUILD_TYPE=RELEASE -D WITH_CUDA=OFF -D WITH_OPENGL=OFF .. && \
 	make -j8 && \
 	make install
