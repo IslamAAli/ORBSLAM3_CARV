@@ -112,4 +112,4 @@ tools/*
 !Thirdparty/DBoW2/DUtils/Timestamp.cpp
 !Thirdparty/DBoW2/DUtils/Timestamp.h
 !Thirdparty/g2o/stuff/timeutil.cpp
-!Thirdparty/g2o/stuff/timeutil.h
+!Thirdparty/g2o/g2o/stuff/timeutil.h
