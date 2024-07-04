@@ -1158,18 +1158,47 @@ void KeyFrame::SetKeyFrameDatabase(KeyFrameDatabase* pKFDB)
 
 
 // ========== CARV ==========
+// TODO: check if it works correctly
 cv::Mat KeyFrame::TransformPointWtoC(cv::Mat Pw){
-    cv::Mat Rcw = Tcw.rowRange(0,3).colRange(0,3);
-    cv::Mat tcw = Tcw.rowRange(0,3).col(3);
-    cv::Mat Pc = Rcw * Pw + tcw;
+    // Extract rotation (Rcw) and translation (tcw) from mTcw
+    Eigen::Matrix3f Rcw = mTcw.rotationMatrix();
+    Eigen::Vector3f tcw = mTcw.translation();
+
+    // Convert Pw from cv::Mat to Eigen::Vector3f
+    Eigen::Vector3f Pw_eigen;
+    Pw_eigen << Pw.at<float>(0), Pw.at<float>(1), Pw.at<float>(2);
+
+    // Compute the 3D point in the camera coordinate system
+    Eigen::Vector3f Pc_eigen = Rcw * Pw_eigen + tcw;
+
+    // Convert Pc_eigen to cv::Mat
+    cv::Mat Pc(3, 1, CV_32F);
+    Pc.at<float>(0) = Pc_eigen(0);
+    Pc.at<float>(1) = Pc_eigen(1);
+    Pc.at<float>(2) = Pc_eigen(2);
+
     return Pc;
 }
 
 cv::Point2f KeyFrame::ProjectPointOnCamera(cv::Mat Pw){
     cv::Point2f xy;
-    cv::Mat Rcw = Tcw.rowRange(0,3).colRange(0,3);
-    cv::Mat tcw = Tcw.rowRange(0,3).col(3);
-    cv::Mat Pc = Rcw * Pw + tcw;
+
+    Eigen::Matrix3f Rcw = mTcw.rowRange(0,3).colRange(0,3);
+    Eigen::Matrix3f tcw = mTcw.rowRange(0,3).col(3);
+
+    // Convert Pw from cv::Mat to Eigen::Vector3f
+    Eigen::Vector3f Pw_eigen;
+    Pw_eigen << Pw.at<float>(0), Pw.at<float>(1), Pw.at<float>(2);
+
+    // Compute the 3D point in the camera coordinate system
+    Eigen::Vector3f Pc_eigen = Rcw * Pw_eigen + tcw;
+
+    // Convert Pc_eigen to cv::Mat
+    cv::Mat Pc(3, 1, CV_32F);
+    Pc.at<float>(0) = Pc_eigen(0);
+    Pc.at<float>(1) = Pc_eigen(1);
+    Pc.at<float>(2) = Pc_eigen(2);
+
     float &PcX = Pc.at<float>(0);
     float &PcY = Pc.at<float>(1);
     float &PcZ = Pc.at<float>(2);
