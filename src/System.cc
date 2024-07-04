@@ -249,7 +249,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
     // ========== CARV ==========
     //CARV: set pointer of modeler
-    mpMap->mpAtlas(mpModeler);
+    mpAtlas->SetModeler(mpModeler);
     mpTracker->SetModeler(mpModeler);
     mpLocalMapper->SetModeler(mpModeler);
     mpModelDrawer->SetModeler(mpModeler);
