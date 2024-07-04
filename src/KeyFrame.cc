@@ -1183,8 +1183,9 @@ cv::Mat KeyFrame::TransformPointWtoC(cv::Mat Pw){
 cv::Point2f KeyFrame::ProjectPointOnCamera(cv::Mat Pw){
     cv::Point2f xy;
 
-    Eigen::Matrix3f Rcw = mTcw.rowRange(0,3).colRange(0,3);
-    Eigen::Matrix3f tcw = mTcw.rowRange(0,3).col(3);
+    // Extract rotation (Rcw) and translation (tcw) from mTcw
+    Eigen::Matrix3f Rcw = mTcw.rotationMatrix();
+    Eigen::Vector3f tcw = mTcw.translation();
 
     // Convert Pw from cv::Mat to Eigen::Vector3f
     Eigen::Vector3f Pw_eigen;
@@ -1216,9 +1217,6 @@ cv::Point2f KeyFrame::ProjectPointOnCamera(cv::Mat Pw){
     return xy;
 }
 
-Map* KeyFrame::GetMap() {
-    return mpMap;
-}
 //TODO: Check this constructor is it covering everything or not
 KeyFrame::KeyFrame(KeyFrame *pKF):
         mnFrameId(pKF->mnFrameId), mTimeStamp(pKF->mTimeStamp), mnGridCols(pKF->mnGridCols), mnGridRows(pKF->mnGridRows),
