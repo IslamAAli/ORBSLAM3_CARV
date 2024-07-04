@@ -323,7 +323,8 @@ if(realsense2_FOUND)
     target_link_libraries(recorder_realsense_T265 ${PROJECT_NAME})
 endif()
 
-# Build tools
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
-add_executable(bin_vocabulary
-        tools/bin_vocabulary.cc)
+
+# # Build tools
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
+# add_executable(bin_vocabulary
+#         tools/bin_vocabulary.cc)
