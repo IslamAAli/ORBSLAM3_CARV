@@ -1233,7 +1233,7 @@ KeyFrame::KeyFrame(KeyFrame *pKF):
         mvInvLevelSigma2(pKF->mvInvLevelSigma2), mnMinX(pKF->mnMinX), mnMinY(pKF->mnMinY), mnMaxX(pKF->mnMaxX),
         mnMaxY(pKF->mnMaxY), mK_(pKF->mK_), mvpMapPoints(pKF->mvpMapPoints), mpKeyFrameDB(pKF->mpKeyFrameDB),
         mpORBvocabulary(pKF->mpORBvocabulary), mbFirstConnection(pKF->mbFirstConnection), mpParent(pKF->mpParent),
-        mbNotErase(pKF->mbNotErase),
+        mbNotErase(pKF->mbNotErase), NLeft(pKF->Nleft), NRight(pKF->Nright)
         mbToBeErased(pKF->mbToBeErased), mbBad(pKF->mbBad), mHalfBaseline(pKF->mHalfBaseline), mpMap(pKF->mpMap)
 {
     mnId=pKF->mnId;
