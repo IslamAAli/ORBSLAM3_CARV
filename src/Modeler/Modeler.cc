@@ -17,7 +17,7 @@
 /// Function prototype for DetectEdgesByED exported by EDLinesLib.a
 LS *DetectLinesByED(unsigned char *srcImg, int width, int height, int *pNoLines);
 
-namespace ORB_SLAM2 {
+namespace ORB_SLAM3 {
 
     Modeler::Modeler(ModelDrawer* pModelDrawer):
             mbResetRequested(false), mbFinishRequested(false), mbFinished(true), mpModelDrawer(pModelDrawer),

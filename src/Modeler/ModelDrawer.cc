@@ -4,7 +4,7 @@
 
 #include "Modeler/ModelDrawer.h"
 
-namespace ORB_SLAM2
+namespace ORB_SLAM3
 {
     ModelDrawer::ModelDrawer():mbModelUpdateRequested(false), mbModelUpdateDone(true)
     {

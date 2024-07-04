@@ -17,7 +17,7 @@
 #include "Modeler/Modeler.h"
 #include "Modeler/TextureFrame.h"
 
-namespace ORB_SLAM2
+namespace ORB_SLAM3
 {
 
     class KeyFrame;

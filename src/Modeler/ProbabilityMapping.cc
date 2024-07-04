@@ -58,7 +58,7 @@ float bilinear(const cv::Mat& img, const float& y, const float& x)
     return interpolated;
 }
 
-ProbabilityMapping::ProbabilityMapping(ORB_SLAM2::Map* pMap):mpMap(pMap)
+ProbabilityMapping::ProbabilityMapping(ORB_SLAM3::Map* pMap):mpMap(pMap)
 {
 }
 
@@ -103,10 +103,10 @@ void ProbabilityMapping::Run()
         std::cerr << "Failed to save points on line" << std::endl;
         return;
     }
-    vector<ORB_SLAM2::KeyFrame*> vpKFs = mpMap->GetAllKeyFrames();
+    vector<ORB_SLAM3::KeyFrame*> vpKFs = mpMap->GetAllKeyFrames();
 
     for (size_t indKF = 0; indKF < vpKFs.size(); indKF++) {
-        ORB_SLAM2::KeyFrame* kf = vpKFs[indKF];
+        ORB_SLAM3::KeyFrame* kf = vpKFs[indKF];
         if( kf->isBad() ) continue;
         if(! kf->semidense_flag_) continue;
         if(! kf->interKF_depth_flag_) continue;
@@ -134,22 +134,22 @@ void ProbabilityMapping::Run()
     mbFinished = true;
 }
 
-void ProbabilityMapping::SemiDenseLoop(ORB_SLAM2::KeyFrame* pKF){
+void ProbabilityMapping::SemiDenseLoop(ORB_SLAM3::KeyFrame* pKF){
 
     {
-        ORB_SLAM2::KeyFrame *kf = pKF;
+        ORB_SLAM3::KeyFrame *kf = pKF;
         if (kf->isBad() || kf->semidense_flag_)
             return;
 //        // 10 keyframe delay
 //        if (!kf->MappingIdDelay())
 //            continue;
 
-//        std::vector<ORB_SLAM2::KeyFrame*> closestMatches = kf->GetBestCovisibilityKeyFrames(covisN);
+//        std::vector<ORB_SLAM3::KeyFrame*> closestMatches = kf->GetBestCovisibilityKeyFrames(covisN);
 //        if(closestMatches.size() < covisN) {continue;}
 
         // use covisN good neighbor kfs
-        std::vector<ORB_SLAM2::KeyFrame *> closestMatchesAll = kf->GetVectorCovisibleKeyFrames();
-        std::vector<ORB_SLAM2::KeyFrame *> closestMatches;
+        std::vector<ORB_SLAM3::KeyFrame *> closestMatchesAll = kf->GetVectorCovisibleKeyFrames();
+        std::vector<ORB_SLAM3::KeyFrame *> closestMatches;
         for (size_t idxCov = 0; idxCov < closestMatchesAll.size(); idxCov++) {
             if (closestMatches.size() >= covisN)
                 break;
@@ -167,7 +167,7 @@ void ProbabilityMapping::SemiDenseLoop(ORB_SLAM2::KeyFrame* pKF){
 
         cout << "semidense_Info:    vpKFs.size()--> " << vpKFs.size() << std::endl;
 
-        std::map<ORB_SLAM2::KeyFrame *, float> rotIs;
+        std::map<ORB_SLAM3::KeyFrame *, float> rotIs;
         for (size_t j = 0; j < closestMatches.size(); j++) {
             std::vector<float> rot = GetRotInPlane(kf, closestMatches[j]);
             std::sort(rot.begin(), rot.end());
@@ -175,7 +175,7 @@ void ProbabilityMapping::SemiDenseLoop(ORB_SLAM2::KeyFrame* pKF){
             float medianRot = 0;
             if (rot.size() > 0)
                 medianRot = rot[(rot.size() - 1) / 2];
-            rotIs.insert(std::map<ORB_SLAM2::KeyFrame *, float>::value_type(closestMatches[j], medianRot));
+            rotIs.insert(std::map<ORB_SLAM3::KeyFrame *, float>::value_type(closestMatches[j], medianRot));
         }
 
         float max_depth;
@@ -189,7 +189,7 @@ void ProbabilityMapping::SemiDenseLoop(ORB_SLAM2::KeyFrame* pKF){
         std::vector<cv::Mat> F;
         F.clear();
         for (size_t j = 0; j < closestMatches.size(); j++) {
-            ORB_SLAM2::KeyFrame *kf2 = closestMatches[j];
+            ORB_SLAM3::KeyFrame *kf2 = closestMatches[j];
             cv::Mat F12 = ComputeFundamental(kf, kf2);
             F.push_back(F12);
         }
@@ -204,7 +204,7 @@ void ProbabilityMapping::SemiDenseLoop(ORB_SLAM2::KeyFrame* pKF){
                 std::vector<depthHo> depth_ho;
                 depth_ho.clear();
                 for (size_t j = 0; j < closestMatches.size(); j++) {
-                    ORB_SLAM2::KeyFrame *kf2 = closestMatches[j];
+                    ORB_SLAM3::KeyFrame *kf2 = closestMatches[j];
                     cv::Mat F12 = F[j];
 
                     float rot = rotIs[kf2];
@@ -261,17 +261,17 @@ void ProbabilityMapping::SemiDenseLoop(ORB_SLAM2::KeyFrame* pKF){
 
     for(size_t i =0;i < vpKFs.size(); i++ )
     {
-        ORB_SLAM2::KeyFrame* kf = vpKFs[i];
+        ORB_SLAM3::KeyFrame* kf = vpKFs[i];
         if (kf->isBad() || kf->interKF_depth_flag_)continue;
 
         if (!kf->semidense_flag_) continue;
 
         // option1: could just be the best covisibility keyframes
-//        std::vector<ORB_SLAM2::KeyFrame*> neighbors = kf->GetBestCovisibilityKeyFrames(covisN);
+//        std::vector<ORB_SLAM3::KeyFrame*> neighbors = kf->GetBestCovisibilityKeyFrames(covisN);
 //        if(neighbors.size() < covisN) {continue;}
 
-        std::vector<ORB_SLAM2::KeyFrame*> neighbors;
-        std::vector<ORB_SLAM2::KeyFrame*> neighborsAll = kf->GetVectorCovisibleKeyFrames();
+        std::vector<ORB_SLAM3::KeyFrame*> neighbors;
+        std::vector<ORB_SLAM3::KeyFrame*> neighborsAll = kf->GetVectorCovisibleKeyFrames();
         for (size_t idxCov = 0; idxCov < neighborsAll.size(); idxCov++){
             if (neighbors.size() >= covisN)
                 break;
@@ -319,11 +319,11 @@ void ProbabilityMapping::SemiDenseLoop(ORB_SLAM2::KeyFrame* pKF){
 
 
 void ProbabilityMapping::UpdateAllSemiDensePointSet(){
-    vector<ORB_SLAM2::KeyFrame*> vpKFs = mpMap->GetAllKeyFrames();
+    vector<ORB_SLAM3::KeyFrame*> vpKFs = mpMap->GetAllKeyFrames();
     if(vpKFs.size() < 10){return;}
 
     for (size_t i = 0; i < vpKFs.size(); i++){
-        ORB_SLAM2::KeyFrame* kf = vpKFs[i];
+        ORB_SLAM3::KeyFrame* kf = vpKFs[i];
         if (kf->isBad() || !kf->interKF_depth_flag_)
             continue;
         if (kf->poseChanged) {
@@ -334,7 +334,7 @@ void ProbabilityMapping::UpdateAllSemiDensePointSet(){
 }
 
 
-void ProbabilityMapping::UpdateSemiDensePointSet(ORB_SLAM2::KeyFrame* kf){
+void ProbabilityMapping::UpdateSemiDensePointSet(ORB_SLAM3::KeyFrame* kf){
 
 #pragma omp parallel for schedule(dynamic) collapse(2)
     for(int y = 0+2; y < kf->im_.rows-2; y++)
@@ -367,7 +367,7 @@ void ProbabilityMapping::UpdateSemiDensePointSet(ORB_SLAM2::KeyFrame* kf){
 }
 
 
-void ProbabilityMapping::StereoSearchConstraints(ORB_SLAM2::KeyFrame* kf, float* min_depth, float* max_depth){
+void ProbabilityMapping::StereoSearchConstraints(ORB_SLAM3::KeyFrame* kf, float* min_depth, float* max_depth){
     std::vector<float> orb_depths = kf->GetAllPointDepths();
 
     float sum = std::accumulate(orb_depths.begin(), orb_depths.end(), 0.0);
@@ -382,7 +382,7 @@ void ProbabilityMapping::StereoSearchConstraints(ORB_SLAM2::KeyFrame* kf, float*
     *min_depth = 1/(mean - 2 * stdev);
 }
 
-void ProbabilityMapping::EpipolarSearch(ORB_SLAM2::KeyFrame* kf1, ORB_SLAM2::KeyFrame *kf2, const int x, const int y, float pixel,
+void ProbabilityMapping::EpipolarSearch(ORB_SLAM3::KeyFrame* kf1, ORB_SLAM3::KeyFrame *kf2, const int x, const int y, float pixel,
                                         float min_depth, float max_depth, depthHo *dh,cv::Mat F12,float& best_u,float& best_v,float th_pi,float rot)
 {
 
@@ -464,9 +464,9 @@ void ProbabilityMapping::EpipolarSearch(ORB_SLAM2::KeyFrame* kf1, ORB_SLAM2::Key
 
 }
 
-std::vector<float> ProbabilityMapping::GetRotInPlane(ORB_SLAM2::KeyFrame* kf1, ORB_SLAM2::KeyFrame* kf2){
-    std::vector<ORB_SLAM2::MapPoint*> vMPs1 = kf1->GetMapPointMatches();
-    std::vector<ORB_SLAM2::MapPoint*> vMPs2 = kf2->GetMapPointMatches();
+std::vector<float> ProbabilityMapping::GetRotInPlane(ORB_SLAM3::KeyFrame* kf1, ORB_SLAM3::KeyFrame* kf2){
+    std::vector<ORB_SLAM3::MapPoint*> vMPs1 = kf1->GetMapPointMatches();
+    std::vector<ORB_SLAM3::MapPoint*> vMPs2 = kf2->GetMapPointMatches();
     std::vector<float> rotInPlane;
     for (size_t idx1 = 0; idx1 < vMPs1.size(); idx1++){
         if (vMPs1[idx1]){
@@ -625,7 +625,7 @@ void ProbabilityMapping::InverseDepthHypothesisFusion(const std::vector<depthHo>
     }
 }
 
-void ProbabilityMapping::InterKeyFrameDepthChecking(ORB_SLAM2::KeyFrame* currentKf, std::vector<ORB_SLAM2::KeyFrame*> neighbors) {
+void ProbabilityMapping::InterKeyFrameDepthChecking(ORB_SLAM3::KeyFrame* currentKf, std::vector<ORB_SLAM3::KeyFrame*> neighbors) {
 
     // for each pixel of keyframe_i, project it onto each neighbor keyframe keyframe_j
     // and propagate inverse depth
@@ -633,7 +633,7 @@ void ProbabilityMapping::InterKeyFrameDepthChecking(ORB_SLAM2::KeyFrame* current
     std::vector <cv::Mat> Rji,tji;
     for(size_t j=0; j<neighbors.size(); j++)
     {
-        ORB_SLAM2::KeyFrame* kf2 = neighbors[ j ];
+        ORB_SLAM3::KeyFrame* kf2 = neighbors[ j ];
 
         cv::Mat Rcw1 = currentKf->GetRotation();
         cv::Mat tcw1 = currentKf->GetTranslation();
@@ -671,7 +671,7 @@ void ProbabilityMapping::InterKeyFrameDepthChecking(ORB_SLAM2::KeyFrame* current
 
             for(size_t j=0; j<neighbors.size(); j++) {
 
-                ORB_SLAM2::KeyFrame* pKFj = neighbors[j];
+                ORB_SLAM3::KeyFrame* pKFj = neighbors[j];
                 cv::Mat K = pKFj->GetCalibrationMatrix();
 
                 cv::Mat xp=(cv::Mat_<float>(3,1) << (px-cx)/fx, (py-cy)/fy,1.0);// inverse project.    if has distortion, this code shoud fix
@@ -803,7 +803,7 @@ void ProbabilityMapping::InterKeyFrameDepthChecking(ORB_SLAM2::KeyFrame* current
 // Utility functions
 ////////////////////////
 
-void ProbabilityMapping::ComputeInvDepthHypothesis(ORB_SLAM2::KeyFrame* kf, ORB_SLAM2::KeyFrame* kf2, float ustar, float ustar_var,
+void ProbabilityMapping::ComputeInvDepthHypothesis(ORB_SLAM3::KeyFrame* kf, ORB_SLAM3::KeyFrame* kf2, float ustar, float ustar_var,
                                                    float a, float b, float c,ProbabilityMapping::depthHo *dh, int x,int y) {
 
     float inv_pixel_depth =  0.0;
@@ -842,7 +842,7 @@ void ProbabilityMapping::GetXp(const cv::Mat& k, int px, int py, cv::Mat* xp) {
 }
 
 // Equation (8)
-void ProbabilityMapping::GetPixelDepth(float uj, int px, int py, ORB_SLAM2::KeyFrame* kf,ORB_SLAM2::KeyFrame* kf2, float &p) {
+void ProbabilityMapping::GetPixelDepth(float uj, int px, int py, ORB_SLAM3::KeyFrame* kf,ORB_SLAM3::KeyFrame* kf2, float &p) {
 
     float fx = kf->fx;
     float cx = kf->cx;
@@ -875,7 +875,7 @@ void ProbabilityMapping::GetPixelDepth(float uj, int px, int py, ORB_SLAM2::KeyF
 }
 
 void ProbabilityMapping::GetSearchRange(float& umin, float& umax, int px, int py,float mind,float maxd,
-                                        ORB_SLAM2::KeyFrame* kf,ORB_SLAM2::KeyFrame* kf2)
+                                        ORB_SLAM3::KeyFrame* kf,ORB_SLAM3::KeyFrame* kf2)
 {
     float fx = kf->fx;
     float cx = kf->cx;
@@ -969,7 +969,7 @@ void ProbabilityMapping::GetFusion(const std::vector<depthHo>& compatible_ho, de
     }
 }
 
-cv::Mat ProbabilityMapping::ComputeFundamental( ORB_SLAM2::KeyFrame *&pKF1,  ORB_SLAM2::KeyFrame *&pKF2) {
+cv::Mat ProbabilityMapping::ComputeFundamental( ORB_SLAM3::KeyFrame *&pKF1,  ORB_SLAM3::KeyFrame *&pKF2) {
     cv::Mat R1w = pKF1->GetRotation();
     cv::Mat t1w = pKF1->GetTranslation();
     cv::Mat R2w = pKF2->GetRotation();

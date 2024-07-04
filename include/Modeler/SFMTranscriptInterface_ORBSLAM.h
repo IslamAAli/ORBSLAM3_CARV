@@ -9,8 +9,8 @@
 #include "KeyFrame.h"
 #include "Modeler/TextureFrame.h"
 
-typedef ORB_SLAM2::MapPoint MapPoint;
-typedef ORB_SLAM2::KeyFrame KeyFrame;
+typedef ORB_SLAM3::MapPoint MapPoint;
+typedef ORB_SLAM3::KeyFrame KeyFrame;
 
 class SFMTranscriptInterface_ORBSLAM;
 class SFMTranscriptInterface_ORBSLAM{

@@ -2,14 +2,14 @@
 // Created by theia on 1/10/17.
 //
 
-#ifndef ORB_SLAM2_MODELFRAME_H
-#define ORB_SLAM2_MODELFRAME_H
+#ifndef ORB_SLAM3_MODELFRAME_H
+#define ORB_SLAM3_MODELFRAME_H
 
 #include "KeyFrame.h"
 #include "MapPoint.h"
 #include "Frame.h"
 
-namespace ORB_SLAM2 {
+namespace ORB_SLAM3 {
 
     class KeyFrame;
     class MapPoint;
@@ -44,4 +44,4 @@ namespace ORB_SLAM2 {
 
 }
 
-#endif //ORB_SLAM2_MODELFRAME_H
+#endif //ORB_SLAM3_MODELFRAME_H

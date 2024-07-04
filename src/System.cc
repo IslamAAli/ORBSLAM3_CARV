@@ -221,7 +221,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     // ========== CARV ==========
     //CARV: Initialize the Modeler thread and launch
     mpModeler = new Modeler(mpModelDrawer);
-    mptModeler = new thread(&ORB_SLAM2::Modeler::Run, mpModeler);
+    mptModeler = new thread(&ORB_SLAM3::Modeler::Run, mpModeler);
     // ========== CARV ==========
 
     //Set pointers between threads
