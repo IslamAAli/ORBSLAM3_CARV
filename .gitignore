@@ -115,3 +115,5 @@ tools/*
 !Thirdparty/g2o/g2o/stuff/timeutil.h
 !Thirdparty/EDLines/Makefile
 !Thirdparty/EDLines/Timer.h
+!tools/bin_vocabulary
+!tools/bin_vocabulary.cc
