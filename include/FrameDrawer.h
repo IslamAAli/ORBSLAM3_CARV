@@ -36,6 +36,9 @@ namespace ORB_SLAM3
 
 class Tracking;
 class Viewer;
+// ========== CARV ==========
+class Map;
+// ========== CARV ==========
 
 class FrameDrawer
 {

@@ -1439,6 +1439,14 @@ void Tracking::SetViewer(Viewer *pViewer)
     mpViewer=pViewer;
 }
 
+// ========== CARV ==========
+//CARV: set modeler pointer
+void Tracking::SetModeler(Modeler *pModeler)
+{
+    mpModeler=pModeler;
+}
+// ========== CARV ==========
+
 void Tracking::SetStepByStep(bool bSet)
 {
     bStepByStep = bSet;
@@ -1610,6 +1618,15 @@ Sophus::SE3f Tracking::GrabImageMonocular(const cv::Mat &im, const double &times
 
     lastID = mCurrentFrame.mnId;
     Track();
+
+    // ========== CARV ==========
+    //CARV: aquire rgb image and frameid
+    if(mState==OK){
+        cv::Mat imu;
+        cv::undistort(im,imu,mK,mDistCoef);
+        mpModeler->AddFrameImage(mCurrentFrame.mnId, imu);
+    }
+    // ========== CARV ==========
 
     return mCurrentFrame.GetPose();
 }
@@ -3795,6 +3812,12 @@ void Tracking::Reset(bool bLocMap)
         Verbose::PrintMess("done", Verbose::VERBOSITY_NORMAL);
     }
 
+    // ========== CARV ==========
+    // CARV: Reset Modeling
+    Verbose::PrintMess("Reseting Modeler...", Verbose::VERBOSITY_NORMAL);
+    mpModeler->RequestReset();
+    Verbose::PrintMess("done", Verbose::VERBOSITY_NORMAL);
+    // ========== CARV ==========
 
     // Reset Loop Closing
     Verbose::PrintMess("Reseting Loop Closing...", Verbose::VERBOSITY_NORMAL);

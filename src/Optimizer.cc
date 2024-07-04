@@ -281,6 +281,13 @@ void Optimizer::BundleAdjustment(const vector<KeyFrame *> &vpKFs, const vector<M
     Verbose::PrintMess("BA: End of the optimization", Verbose::VERBOSITY_NORMAL);
 
     // Recover optimized data
+
+    // ========== CARV ==========
+    //carv: prepare bundle adjust entry
+    std::set<KeyFrame*> sBAKF;
+    std::set<MapPoint*> sBAMP;
+    // ========== CARV ==========
+
     //Keyframes
     for(size_t i=0; i<vpKFs.size(); i++)
     {
@@ -362,6 +369,11 @@ void Optimizer::BundleAdjustment(const vector<KeyFrame *> &vpKFs, const vector<M
                 }
             }
         }
+
+        // ========== CARV ==========
+        //carv: add KeyFrame to set
+        sBAKF.insert(pKF);
+        // ========== CARV ==========
     }
 
     //Points
@@ -386,7 +398,17 @@ void Optimizer::BundleAdjustment(const vector<KeyFrame *> &vpKFs, const vector<M
             pMP->mPosGBA = vPoint->estimate().cast<float>();
             pMP->mnBAGlobalForKF = nLoopKF;
         }
+
+        // ========== CARV ==========
+        //carv: add MapPoint to set
+        sBAMP.insert(pMP);
+        // ========== CARV ==========
     }
+
+    // ========== CARV ==========
+    // carv: log bundle adjust
+    pMap->mpModeler->AddAdjustmentEntry(sBAKF,sBAMP);
+    // ========== CARV ==========
 }
 
 void Optimizer::FullInertialBA(Map *pMap, int its, const bool bFixLocal, const long unsigned int nLoopId, bool *pbStopFlag, bool bInit, float priorG, float priorA, Eigen::VectorXd *vSingVal, bool *bHess)

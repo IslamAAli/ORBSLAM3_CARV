@@ -24,10 +24,12 @@
 
 namespace ORB_SLAM3
 {
-
-Viewer::Viewer(System* pSystem, FrameDrawer *pFrameDrawer, MapDrawer *pMapDrawer, Tracking *pTracking, const string &strSettingPath, Settings* settings):
-    both(false), mpSystem(pSystem), mpFrameDrawer(pFrameDrawer),mpMapDrawer(pMapDrawer), mpTracker(pTracking),
+// ========== CARV ==========
+// carv initialize with modeldrawer
+Viewer::Viewer(System* pSystem, FrameDrawer *pFrameDrawer, MapDrawer *pMapDrawer, ModelDrawer* pModelDrawer, Tracking *pTracking, const string &strSettingPath, Settings* settings):
+    both(false), mpSystem(pSystem), mpFrameDrawer(pFrameDrawer),mpMapDrawer(pMapDrawer), mpModelDrawer(pModelDrawer), mpTracker(pTracking),
     mbFinishRequested(false), mbFinished(true), mbStopped(true), mbStopRequested(false)
+// ========== CARV ==========
 {
     if(settings){
         newParameterLoader(settings);
@@ -72,6 +74,17 @@ void Viewer::newParameterLoader(Settings *settings) {
     mViewpointY = settings->viewPointY();
     mViewpointZ = settings->viewPointZ();
     mViewpointF = settings->viewPointF();
+
+    // ========== CARV ==========
+    // carv params
+    // mfx = fSettings["Camera.fx"];
+    // mfy = fSettings["Camera.fy"];
+    // mcx = fSettings["Camera.cx"];
+    // mcy = fSettings["Camera.cy"];
+
+    // int nRGB = fSettings["Camera.RGB"];
+    // mbRGB = nRGB;
+    // ========== CARV ==========
 }
 
 bool Viewer::ParseViewerParamFile(cv::FileStorage &fSettings)
@@ -164,7 +177,8 @@ void Viewer::Run()
     mbFinished = false;
     mbStopped = false;
 
-    pangolin::CreateWindowAndBind("ORB-SLAM3: Map Viewer",1024,768);
+    // CARV edit
+    pangolin::CreateWindowAndBind("ORB-SLAM3: Map Viewer",mImageWidth+175,mImageHeight);
 
     // 3D Mouse handler requires depth testing to be enabled
     glEnable(GL_DEPTH_TEST);
@@ -179,25 +193,40 @@ void Viewer::Run()
     pangolin::Var<bool> menuTopView("menu.Top View",false,false);
     // pangolin::Var<bool> menuSideView("menu.Side View",false,false);
     pangolin::Var<bool> menuShowPoints("menu.Show Points",true,true);
-    pangolin::Var<bool> menuShowKeyFrames("menu.Show KeyFrames",true,true);
+    pangolin::Var<bool> menuShowKeyFrames("menu.Show KeyFrames",false,true);
     pangolin::Var<bool> menuShowGraph("menu.Show Graph",false,true);
-    pangolin::Var<bool> menuShowInertialGraph("menu.Show Inertial Graph",true,true);
+    pangolin::Var<bool> menuShowInertialGraph("menu.Show Inertial Graph",false,true);
     pangolin::Var<bool> menuLocalizationMode("menu.Localization Mode",false,true);
     pangolin::Var<bool> menuReset("menu.Reset",false,false);
     pangolin::Var<bool> menuStop("menu.Stop",false,false);
     pangolin::Var<bool> menuStepByStep("menu.Step By Step",false,true);  // false, true
     pangolin::Var<bool> menuStep("menu.Step",false,false);
 
+    // ========== CARV ==========
+    // CARV Edits (view menu items)
+    pangolin::Var<bool> menuShowModel("menu.Show Model",true,true);
+    pangolin::Var<bool> menuShowTexture("menu.Show Texture",false,true);
+    pangolin::Var<bool> menuSaveCARV("menu.Save CARV",false,true);
+    // ========== CARV ==========
+
     pangolin::Var<bool> menuShowOptLba("menu.Show LBA opt", false, true);
     // Define Camera Render Object (for view / scene browsing)
+    //TODO: map vs. cam edits
     pangolin::OpenGlRenderState s_cam(
                 pangolin::ProjectionMatrix(1024,768,mViewpointF,mViewpointF,512,389,0.1,1000),
                 pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0)
+
+                // ========== CARV ==========
+                // // carv: using calibrated camera center and focal length
+                // pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000),
+                // pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0)
+                // ========== CARV ==========
                 );
 
+    // CARV Edit
     // Add named OpenGL viewport to window and provide 3D Handler
     pangolin::View& d_cam = pangolin::CreateDisplay()
-            .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -1024.0f/768.0f)
+            .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -mImageWidth/mImageHeight)
             .SetHandler(new pangolin::Handler3D(s_cam));
 
     pangolin::OpenGlMatrix Twc, Twr;
@@ -219,6 +248,17 @@ void Viewer::Run()
     float trackedImageScale = mpTracker->GetImageScale();
 
     cout << "Starting the Viewer" << endl;
+
+    // ========== CARV ==========
+    // // carv: camera close up view
+    // bool bCameraView = true;
+    // pangolin::OpenGlMatrix projectionAbove = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mViewpointF,mViewpointF,
+    //                                                                 mImageWidth/2,mImageHeight/2,0.1,1000);
+    // pangolin::OpenGlMatrix projectionCamera = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000);
+    // pangolin::OpenGlMatrix viewAbove = pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0);
+    // pangolin::OpenGlMatrix viewCamera = pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0);
+    // ========== CARV ==========
+
     while(1)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -306,6 +346,21 @@ void Viewer::Run()
             menuStep = false;
         }
 
+        // ========== CARV ==========
+        // carv: setup viewpoint to see model
+        // if(menuCameraView && !bCameraView)
+        // {
+        //     s_map.SetProjectionMatrix(projectionCamera);
+        //     s_map.SetModelViewMatrix(viewCamera);
+        //     bCameraView = true;
+        // }
+        // else if(!menuCameraView && bCameraView)
+        // {
+        //     s_map.SetProjectionMatrix(projectionAbove);
+        //     s_map.SetModelViewMatrix(viewAbove);
+        //     bCameraView = false;
+        // }
+        // ========== CARV ==========
 
         d_cam.Activate(s_cam);
         glClearColor(1.0f,1.0f,1.0f,1.0f);
@@ -313,7 +368,33 @@ void Viewer::Run()
         if(menuShowKeyFrames || menuShowGraph || menuShowInertialGraph || menuShowOptLba)
             mpMapDrawer->DrawKeyFrames(menuShowKeyFrames,menuShowGraph, menuShowInertialGraph, menuShowOptLba);
         if(menuShowPoints)
+        {
             mpMapDrawer->DrawMapPoints();
+            // ========== CARV ==========
+            // carv: show model points
+            mpModelDrawer->DrawModelPoints();
+            // ========== CARV ==========
+        }
+
+        // ========== CARV ==========
+        // carv: show model or triangle with light from camera
+        CheckGlDieOnError()
+        if(menuShowModel && menuShowTexture) {
+            mpModelDrawer->DrawModel(mbRGB);
+        }
+        else if (menuShowModel && !menuShowTexture) {
+            mpModelDrawer->DrawTriangles(MapTwc);
+        }
+        else if (!menuShowModel && menuShowTexture) {
+            mpModelDrawer->DrawFrame(mbRGB);
+        }
+        if(menuSaveCARV)
+        {
+            mpSystem->mpModeler->writeToFile("chris_CARV_Files");
+            menuSaveCARV = false;
+        }
+        CheckGlDieOnError()
+        // ========== CARV ==========
 
         pangolin::FinishFrame();
 
@@ -340,9 +421,9 @@ void Viewer::Run()
 
         if(menuReset)
         {
-            menuShowGraph = true;
+            menuShowGraph = false;
             menuShowInertialGraph = true;
-            menuShowKeyFrames = true;
+            menuShowKeyFrames = false;
             menuShowPoints = true;
             menuLocalizationMode = false;
             if(bLocalizationMode)
@@ -352,6 +433,13 @@ void Viewer::Run()
             menuFollowCamera = true;
             mpSystem->ResetActiveMap();
             menuReset = false;
+
+            // ========== CARV ==========
+            // carv: reset to default
+            menuCameraView = true;
+            menuShowModel = true;
+            menuShowTexture = true;
+            // ========== CARV ==========
         }
 
         if(menuStop)

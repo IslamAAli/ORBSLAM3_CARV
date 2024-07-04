@@ -175,7 +175,7 @@ int main(int argc, char **argv)
     #ifdef COMPILEDWITHC11
                 std::chrono::steady_clock::time_point t_Start_Resize = std::chrono::steady_clock::now();
     #else
-                std::chrono::monotonic_clock::time_point t_Start_Resize = std::chrono::steady_clock::now();
+                std::chrono::steady_clock::time_point t_Start_Resize = std::chrono::steady_clock::now();
     #endif
 #endif
                 int width = im.cols * imageScale;

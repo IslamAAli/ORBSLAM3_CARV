@@ -38,6 +38,9 @@ class KeyFrame;
 class Atlas;
 class KeyFrameDatabase;
 
+// carv: declaration
+class Modeler;
+
 class Map
 {
     friend class boost::serialization::access;
@@ -154,6 +157,15 @@ public:
     // DEBUG: show KFs which are used in LBA
     std::set<long unsigned int> msOptKFs;
     std::set<long unsigned int> msFixedKFs;
+
+    // ========== CARV ==========
+    // carv: pointer to modeler
+    Modeler* mpModeler;
+    void SetModeler(Modeler* pModeler){
+        mpModeler = pModeler;
+    }
+    KeyFrame * newestKeyFrame;
+    // ========== CARV ==========
 
 protected:
 

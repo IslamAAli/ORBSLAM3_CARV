@@ -6,8 +6,11 @@ cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j
 
-cd ../../g2o
+cd ../../EDLines
+echo "Configuring and building Thirdparty/EDLines ..."
+make
 
+cd ../../g2o
 echo "Configuring and building Thirdparty/g2o ..."
 
 mkdir build
@@ -37,4 +40,8 @@ echo "Configuring and building ORB_SLAM3 ..."
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
-make -j4
+make -j2
+cd ..
+
+echo "Converting vocabulary to binary"
+./tools/bin_vocabulary

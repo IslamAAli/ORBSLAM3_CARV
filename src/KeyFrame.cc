@@ -1156,4 +1156,65 @@ void KeyFrame::SetKeyFrameDatabase(KeyFrameDatabase* pKFDB)
     mpKeyFrameDB = pKFDB;
 }
 
+
+// ========== CARV ==========
+cv::Mat KeyFrame::TransformPointWtoC(cv::Mat Pw){
+    cv::Mat Rcw = Tcw.rowRange(0,3).colRange(0,3);
+    cv::Mat tcw = Tcw.rowRange(0,3).col(3);
+    cv::Mat Pc = Rcw * Pw + tcw;
+    return Pc;
+}
+
+cv::Point2f KeyFrame::ProjectPointOnCamera(cv::Mat Pw){
+    cv::Point2f xy;
+    cv::Mat Rcw = Tcw.rowRange(0,3).colRange(0,3);
+    cv::Mat tcw = Tcw.rowRange(0,3).col(3);
+    cv::Mat Pc = Rcw * Pw + tcw;
+    float &PcX = Pc.at<float>(0);
+    float &PcY = Pc.at<float>(1);
+    float &PcZ = Pc.at<float>(2);
+    // Project in image and check it is not outside
+    float invz = 1.0f / PcZ;
+    float x = fx * PcX * invz + cx;
+    float y = fy * PcY * invz + cy;
+    if (PcZ > 0 && IsInImage(x,y)){
+        xy.x = x;
+        xy.y = y;
+    } else {
+        xy.x = -1;
+        xy.y = -1;
+    }
+    return xy;
+}
+
+Map* KeyFrame::GetMap() {
+    return mpMap;
+}
+//TODO: Check this constructor is it covering everything or not
+KeyFrame::KeyFrame(KeyFrame *pKF):
+        mnFrameId(pKF->mnFrameId), mTimeStamp(pKF->mTimeStamp), mnGridCols(pKF->mnGridCols), mnGridRows(pKF->mnGridRows),
+        mfGridElementWidthInv(pKF->mfGridElementWidthInv), mfGridElementHeightInv(pKF->mfGridElementHeightInv),
+        mnTrackReferenceForFrame(pKF->mnTrackReferenceForFrame), mnFuseTargetForKF(pKF->mnFuseTargetForKF),
+        mnBALocalForKF(pKF->mnBALocalForKF), mnBAFixedForKF(pKF->mnBAFixedForKF),
+        mnLoopQuery(pKF->mnLoopQuery), mnLoopWords(pKF->mnLoopWords), mnRelocQuery(pKF->mnRelocQuery),
+        mnRelocWords(pKF->mnRelocWords), mnBAGlobalForKF(pKF->mnBAGlobalForKF),
+        fx(pKF->fx), fy(pKF->fy), cx(pKF->cx), cy(pKF->cy), invfx(pKF->invfx), invfy(pKF->invfy),
+        mbf(pKF->mbf), mb(pKF->mb), mThDepth(pKF->mThDepth), N(pKF->N), mvKeys(pKF->mvKeys), mvKeysUn(pKF->mvKeysUn),
+        mvuRight(pKF->mvuRight), mvDepth(pKF->mvDepth), mDescriptors(pKF->mDescriptors.clone()),
+        mBowVec(pKF->mBowVec), mFeatVec(pKF->mFeatVec), mnScaleLevels(pKF->mnScaleLevels), mfScaleFactor(pKF->mfScaleFactor),
+        mfLogScaleFactor(pKF->mfLogScaleFactor), mvScaleFactors(pKF->mvScaleFactors), mvLevelSigma2(pKF->mvLevelSigma2),
+        mvInvLevelSigma2(pKF->mvInvLevelSigma2), mnMinX(pKF->mnMinX), mnMinY(pKF->mnMinY), mnMaxX(pKF->mnMaxX),
+        mnMaxY(pKF->mnMaxY), mK(pKF->mK), mvpMapPoints(pKF->mvpMapPoints), mpKeyFrameDB(pKF->mpKeyFrameDB),
+        mpORBvocabulary(pKF->mpORBvocabulary), mbFirstConnection(pKF->mbFirstConnection), mpParent(pKF->mpParent),
+        mbNotErase(pKF->mbNotErase),
+        mbToBeErased(pKF->mbToBeErased), mbBad(pKF->mbBad), mHalfBaseline(pKF->mHalfBaseline), mpMap(pKF->mpMap)
+{
+    mnId=pKF->mnId;
+
+    mGrid=pKF->mGrid;
+
+    SetPose(pKF->GetPose());
+}
+// ========== CARV ==========
+
 } //namespace ORB_SLAM

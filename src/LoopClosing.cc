@@ -2300,6 +2300,12 @@ void LoopClosing::RunGlobalBundleAdjustment(Map* pActiveMap, unsigned long nLoop
     int idx =  mnFullBAIdx;
     // Optimizer::GlobalBundleAdjustemnt(mpMap,10,&mbStopGBA,nLoopKF,false);
 
+    // ========== CARV ==========
+    //carv: prepare bundle adjust entry
+    std::set<KeyFrame*> sBAKF;
+    std::set<MapPoint*> sBAMP;
+    // ========== CARV ==========   
+
     // Update all MapPoints and KeyFrames
     // Local Mapping was active during BA, that means that there might be new keyframes
     // not included in the Global BA and they are not consistent with the updated map.
@@ -2446,6 +2452,11 @@ void LoopClosing::RunGlobalBundleAdjustment(Map* pActiveMap, unsigned long nLoop
                 }
 
                 lpKFtoCheck.pop_front();
+
+                // ========== CARV ==========
+                //carv: add KeyFrame to set
+                sBAKF.insert(pKF);
+                // ========== CARV ==========
             }
 
             //cout << "GBA: Correct MapPoints" << endl;
@@ -2482,8 +2493,18 @@ void LoopClosing::RunGlobalBundleAdjustment(Map* pActiveMap, unsigned long nLoop
 
                     // Backproject using corrected camera
                     pMP->SetWorldPos(pRefKF->GetPoseInverse() * Xc);
+
+                    // ========== CARV ==========
+                    //carv: add MapPoint to set
+                    sBAMP.insert(pMP);
+                    // ========== CARV ==========
                 }
             }
+
+            // ========== CARV ==========
+            // carv: log bundle adjust
+            mpAtlas->GetCurrentMap()->mpModeler->AddAdjustmentEntry(sBAKF,sBAMP);
+            // ========== CARV ==========
 
             pActiveMap->InformNewBigChange();
             pActiveMap->IncreaseChangeIndex();

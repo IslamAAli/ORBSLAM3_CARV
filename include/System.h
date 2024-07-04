@@ -40,6 +40,9 @@
 #include "ImuTypes.h"
 #include "Settings.h"
 
+//CARV: modeler classes
+#include "Modeler/Modeler.h"
+#include "Modeler/ModelDrawer.h"
 
 namespace ORB_SLAM3
 {
@@ -79,6 +82,12 @@ class Tracking;
 class LocalMapping;
 class LoopClosing;
 class Settings;
+
+// ========== CARV ==========
+//CARV: Modeler class
+class Modeler;
+class ModelDrawer;
+// ========== CARV ==========
 
 class System
 {
@@ -192,6 +201,11 @@ public:
     void InsertTrackTime(double& time);
 #endif
 
+    // ========== CARV ==========
+    //CARV: Modeler that take map logs to create and display the reconstructed model
+    Modeler* mpModeler;
+    // ========== CARV ==========
+
 private:
 
     void SaveAtlas(int type);
@@ -262,6 +276,12 @@ private:
     string mStrVocabularyFilePath;
 
     Settings* settings_;
+
+    // ========== CARV ==========
+    //CARV: Modeler thread
+    std::thread* mptModeler;
+    ModelDrawer* mpModelDrawer;
+    // ========== CARV ==========
 };
 
 }// namespace ORB_SLAM
