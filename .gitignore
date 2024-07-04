@@ -113,3 +113,5 @@ tools/*
 !Thirdparty/DBoW2/DUtils/Timestamp.h
 !Thirdparty/g2o/g2o/stuff/timeutil.cpp
 !Thirdparty/g2o/g2o/stuff/timeutil.h
+!Thirdparty/EDLines/Makefile
+!Thirdparty/EDLines/Timer.h
