@@ -323,10 +323,6 @@ if(realsense2_FOUND)
     target_link_libraries(recorder_realsense_T265 ${PROJECT_NAME})
 endif()
 
-add_executable(mono_mono
-        Examples/Monocular/mono_mono.cc)
-target_link_libraries(mono_mono ${PROJECT_NAME})
-
 # Build tools
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/tools)
 add_executable(bin_vocabulary
