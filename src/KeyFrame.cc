@@ -1308,7 +1308,7 @@ KeyFrame::KeyFrame(KeyFrame *pKF):
       mvRightToLeftMatch(pKF->mvRightToLeftMatch),
       mvKeysRight(pKF->mvKeysRight),
       NLeft(pKF->NLeft),
-      NRight(pKF->NRight)
+      NRight(0)
 {
     mnId=pKF->mnId;
 
