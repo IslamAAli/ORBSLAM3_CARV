@@ -521,5 +521,19 @@ cv::Mat SFMTranscriptInterface_ORBSLAM::vector3fToCvMat(const Eigen::Vector3f& v
     return cvMat;
 }
 
+Eigen::Vector3f SFMTranscriptInterface_ORBSLAM::matToEigenVector3f(const cv::Mat& mat) {
+    Eigen::Vector3f eigenVec;
+
+    if (mat.rows == 3 && mat.cols == 1 && mat.type() == CV_32F) {
+        eigenVec << mat.at<float>(0, 0), mat.at<float>(1, 0), mat.at<float>(2, 0);
+    } else {
+        // Handle incorrect dimensions or types
+        // For simplicity, here we throw an exception if the input is not as expected
+        throw std::invalid_argument("Input cv::Mat is not a 3x1 matrix of type CV_32F");
+    }
+
+    return eigenVec;
+}
+
 
 #endif
