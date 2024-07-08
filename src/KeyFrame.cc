@@ -1298,7 +1298,7 @@ KeyFrame::KeyFrame(KeyFrame *pKF):
       mpMap(pKF->mpMap),
       mBackupPrevKFId(pKF->mBackupPrevKFId),
       mBackupNextKFId(pKF->mBackupNextKFId),
-      mBackupImuPreintegrated(pKF->mBackupImuPreintegrated),
+    //   mBackupImuPreintegrated(pKF->mBackupImuPreintegrated),
       mnBackupIdCamera(pKF->mnBackupIdCamera),
       mnBackupIdCamera2(pKF->mnBackupIdCamera2),
       mK_(pKF->mK_),
