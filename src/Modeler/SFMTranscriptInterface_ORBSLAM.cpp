@@ -255,7 +255,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionEntry(KeyFrame *k){
 //                    continue;
 
                 // check if it has valid observation first
-                std::map<KeyFrame*, size_t> mObservations = point->GetObservations();
+                std::map<KeyFrame*, std::tuple<int,int>> mObservations = point->GetObservations();
 
                 bool hasObservation = false;
                 for(std::map<KeyFrame *,size_t>::iterator it2 = mObservations.begin(); it2 != mObservations.end(); it2++){
