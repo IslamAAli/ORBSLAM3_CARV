@@ -389,8 +389,8 @@ void SFMTranscriptInterface_ORBSLAM::addBundleAdjustmentEntry(set<KeyFrame *> & 
                     continue;
 //                    throw dlovi::Exception("Could not compute MapPoint index: no record.");
                 nPointIndex = m_mMapPoint_Index[*it];
-                ssTmp << "move point: " << nPointIndex << ", [" << (*it)->GetWorldPos().at<float>(0) << "; " << (*it)->GetWorldPos().at<float>(1)
-                      << "; " << (*it)->GetWorldPos().at<float>(2) << "]";
+                ssTmp << "move point: " << nPointIndex << ", [" << (*it)->GetWorldPos()(0) << "; " << (*it)->GetWorldPos()(1)
+                      << "; " << (*it)->GetWorldPos()(2) << "]";
                 m_SFMTranscript.addLine(ssTmp.str()); ssTmp.str("");
             }
 
