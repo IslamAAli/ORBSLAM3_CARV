@@ -509,9 +509,11 @@ cv::Mat SFMTranscriptInterface_ORBSLAM::se3ToCvMat(const Sophus::SE3<float>& se3
 cv::Mat SFMTranscriptInterface_ORBSLAM::vector3fToCvMat(const Eigen::Vector3f& vector) {
     // Create cv::Mat with 1 row, 3 columns, and CV_32F type
     cv::Mat cvMat(1, 3, CV_32F);
-    
+
     // Copy data from Eigen vector to cv::Mat
-    cv::Mat(cv::Mat(vector.data(), 1, 3, CV_32F)).copyTo(cvMat);
+    cvMat.at<float>(0, 0) = vector(0);
+    cvMat.at<float>(0, 1) = vector(1);
+    cvMat.at<float>(0, 2) = vector(2);
 
     return cvMat;
 }
