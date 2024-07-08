@@ -258,7 +258,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionEntry(KeyFrame *k){
                 std::map<KeyFrame*, std::tuple<int,int>> mObservations = point->GetObservations();
 
                 bool hasObservation = false;
-                for(std::map<KeyFrame *,size_t>::iterator it2 = mObservations.begin(); it2 != mObservations.end(); it2++){
+                for(std::map<KeyFrame *,std::tuple<int,int>>::iterator it2 = mObservations.begin(); it2 != mObservations.end(); it2++){
                     if(m_mKeyFrame_Index.count(it2->first) != 0) {
                         hasObservation = true;
                         break;
@@ -276,7 +276,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionEntry(KeyFrame *k){
 
                 if (hasObservation) {
                     // Append this point's vis list.  (Point initialized from epipolar search: > 1 KF)
-                    for (std::map<KeyFrame *, size_t>::iterator it2 = mObservations.begin();
+                    for (std::map<KeyFrame *, std::tuple<int,int>>::iterator it2 = mObservations.begin();
                          it2 != mObservations.end(); it2++) {
                         if (m_mKeyFrame_Index.count(it2->first) != 0) {
                             ssTmp << ", " << m_mKeyFrame_Index[it2->first];
