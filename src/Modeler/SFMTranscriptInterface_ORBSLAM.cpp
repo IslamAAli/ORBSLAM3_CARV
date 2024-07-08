@@ -522,8 +522,7 @@ cv::Mat SFMTranscriptInterface_ORBSLAM::vector3fToCvMat(const Eigen::Vector3f& v
 }
 
 Eigen::Vector3f SFMTranscriptInterface_ORBSLAM::matToEigenVector(const cv::Mat& mat) {
-    assert(mat.rows == 3 && mat.cols == 1 && mat.type() == CV_32FC1);  // Ensure the matrix is 3x1 and float type
-    
+   
     Eigen::Vector3f vector;
     vector << mat.at<float>(0, 0), mat.at<float>(1, 0), mat.at<float>(2, 0);
     
