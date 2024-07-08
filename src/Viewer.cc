@@ -383,7 +383,7 @@ void Viewer::Run()
             mpModelDrawer->DrawModel(mbRGB);
         }
         else if (menuShowModel && !menuShowTexture) {
-            mpModelDrawer->DrawTriangles(MapTwc);
+            mpModelDrawer->DrawTriangles(Twc);
         }
         else if (!menuShowModel && menuShowTexture) {
             mpModelDrawer->DrawFrame(mbRGB);
