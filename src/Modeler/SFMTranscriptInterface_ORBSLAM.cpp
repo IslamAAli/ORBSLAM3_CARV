@@ -186,7 +186,7 @@ void SFMTranscriptInterface_ORBSLAM::addFirstKeyFrameInsertionEntry(KeyFrame *k)
                 continue;
             if(m_mMapPoint_Index.count(point) == 0){
                 // It's a new point:
-                cv::Mat mWorldPos = point->GetWorldPos();
+                cv::Mat mWorldPos = vector3fToCvMat(point->GetWorldPos());
                 matNewPoint(0) = mWorldPos.at<float>(0);
                 matNewPoint(1) = mWorldPos.at<float>(1);
                 matNewPoint(2) = mWorldPos.at<float>(2);
@@ -227,7 +227,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionEntry(KeyFrame *k){
 
         // TODO: Instead of inverting the whole transform, we should be able to just use the negative translation.
         // GetPoseInverse, seems camera position need to be inversed
-        cv::Mat se3WfromC = k->GetPoseInverse();
+        cv::Mat se3WfromC = se3ToCvMat(k->GetPoseInverse());
         matNewCam(0) = se3WfromC.at<float>(0,3);
         matNewCam(1) = se3WfromC.at<float>(1,3);
         matNewCam(2) = se3WfromC.at<float>(2,3);
@@ -266,7 +266,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionEntry(KeyFrame *k){
                 }
 
                 // It's a new point:
-                cv::Mat mWorldPos = point->GetWorldPos();
+                cv::Mat mWorldPos = vector3fToCvMat(point->GetWorldPos());
                 matNewPoint(0) = mWorldPos.at<float>(0);
                 matNewPoint(1) = mWorldPos.at<float>(1);
                 matNewPoint(2) = mWorldPos.at<float>(2);
@@ -328,7 +328,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionWithLinesEntry(KeyFrame
 
         // TODO: Instead of inverting the whole transform, we should be able to just use the negative translation.
         // GetPoseInverse, seems camera position need to be inversed
-        cv::Mat se3WfromC = kCopy->GetPoseInverse();
+        cv::Mat se3WfromC = se3ToCvMat(kCopy->GetPoseInverse());
         matNewCam(0) = se3WfromC.at<float>(0,3);
         matNewCam(1) = se3WfromC.at<float>(1,3);
         matNewCam(2) = se3WfromC.at<float>(2,3);
@@ -504,6 +504,16 @@ cv::Mat SFMTranscriptInterface_ORBSLAM::se3ToCvMat(const Sophus::SE3<float>& se3
     cvT.copyTo(cvTransform(cv::Rect(3, 0, 1, 3)));
 
     return cvTransform;
+}
+
+cv::Mat SFMTranscriptInterface_ORBSLAM::vector3fToCvMat(const Eigen::Vector3f& vector) {
+    // Create cv::Mat with 1 row, 3 columns, and CV_32F type
+    cv::Mat cvMat(1, 3, CV_32F);
+    
+    // Copy data from Eigen vector to cv::Mat
+    cv::Mat(cv::Mat(vector.data(), 1, 3, CV_32F)).copyTo(cvMat);
+
+    return cvMat;
 }
 
 #endif
