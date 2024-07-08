@@ -491,17 +491,14 @@ cv::Mat SFMTranscriptInterface_ORBSLAM::se3ToCvMat(const Sophus::SE3<float>& se3
     Eigen::Matrix3f R = se3.rotationMatrix();
     Eigen::Vector3f t = se3.translation();
 
-    // Convert rotation matrix to cv::Mat (3x3 CV_32F)
-    cv::Mat cvR(3, 3, CV_32F);
-    cv::eigen2cv(R, cvR);
+    // Create a 4x4 transformation matrix (CV_32F)
+    cv::Mat cvTransform = cv::Mat::eye(4, 4, CV_32F);
 
-    // Convert translation vector to cv::Mat (1x3 CV_32F)
-    cv::Mat cvT(1, 3, CV_32F, t.data());
+    // Copy rotation matrix (3x3) to top-left corner of transformation matrix
+    cv::Mat(cv::Mat(R.data(), 3, 3, CV_32F)).copyTo(cvTransform(cv::Rect(0, 0, 3, 3)));
 
-    // Create a 3x4 transformation matrix [R | t]
-    cv::Mat cvTransform(3, 4, CV_32F);
-    cvR.copyTo(cvTransform(cv::Rect(0, 0, 3, 3)));
-    cvT.copyTo(cvTransform(cv::Rect(3, 0, 1, 3)));
+    // Copy translation vector (1x3) to the last column of transformation matrix
+    cv::Mat(cv::Mat(t.data(), 1, 3, CV_32F)).copyTo(cvTransform(cv::Rect(3, 0, 1, 3)));
 
     return cvTransform;
 }
