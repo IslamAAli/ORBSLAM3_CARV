@@ -77,13 +77,13 @@ void Viewer::newParameterLoader(Settings *settings) {
 
     // ========== CARV ==========
     // carv params
-    // mfx = fSettings["Camera.fx"];
-    // mfy = fSettings["Camera.fy"];
-    // mcx = fSettings["Camera.cx"];
-    // mcy = fSettings["Camera.cy"];
+    mfx = fSettings["Camera.fx"];
+    mfy = fSettings["Camera.fy"];
+    mcx = fSettings["Camera.cx"];
+    mcy = fSettings["Camera.cy"];
 
-    // int nRGB = fSettings["Camera.RGB"];
-    // mbRGB = nRGB;
+    int nRGB = fSettings["Camera.RGB"];
+    mbRGB = nRGB;
     // ========== CARV ==========
 }
 
@@ -217,7 +217,7 @@ void Viewer::Run()
                 pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0)
 
                 // ========== CARV ==========
-                // // carv: using calibrated camera center and focal length
+                // carv: using calibrated camera center and focal length
                 // pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000),
                 // pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0)
                 // ========== CARV ==========
@@ -251,12 +251,12 @@ void Viewer::Run()
 
     // ========== CARV ==========
     // // carv: camera close up view
-    // bool bCameraView = true;
-    // pangolin::OpenGlMatrix projectionAbove = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mViewpointF,mViewpointF,
-    //                                                                 mImageWidth/2,mImageHeight/2,0.1,1000);
-    // pangolin::OpenGlMatrix projectionCamera = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000);
-    // pangolin::OpenGlMatrix viewAbove = pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0);
-    // pangolin::OpenGlMatrix viewCamera = pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0);
+    bool bCameraView = true;
+    pangolin::OpenGlMatrix projectionAbove = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mViewpointF,mViewpointF,
+                                                                    mImageWidth/2,mImageHeight/2,0.1,1000);
+    pangolin::OpenGlMatrix projectionCamera = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000);
+    pangolin::OpenGlMatrix viewAbove = pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0);
+    pangolin::OpenGlMatrix viewCamera = pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0);
     // ========== CARV ==========
 
     while(1)
@@ -348,18 +348,18 @@ void Viewer::Run()
 
         // ========== CARV ==========
         // carv: setup viewpoint to see model
-        // if(menuCameraView && !bCameraView)
-        // {
-        //     s_map.SetProjectionMatrix(projectionCamera);
-        //     s_map.SetModelViewMatrix(viewCamera);
-        //     bCameraView = true;
-        // }
-        // else if(!menuCameraView && bCameraView)
-        // {
-        //     s_map.SetProjectionMatrix(projectionAbove);
-        //     s_map.SetModelViewMatrix(viewAbove);
-        //     bCameraView = false;
-        // }
+        if(menuCameraView && !bCameraView)
+        {
+            s_cam.SetProjectionMatrix(projectionCamera);
+            s_cam.SetModelViewMatrix(viewCamera);
+            bCameraView = true;
+        }
+        else if(!menuCameraView && bCameraView)
+        {
+            s_cam.SetProjectionMatrix(projectionAbove);
+            s_cam.SetModelViewMatrix(viewAbove);
+            bCameraView = false;
+        }
         // ========== CARV ==========
 
         d_cam.Activate(s_cam);
