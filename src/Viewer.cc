@@ -195,6 +195,7 @@ void Viewer::Run()
     pangolin::Var<bool> menuShowPoints("menu.Show Points",true,true);
     pangolin::Var<bool> menuShowKeyFrames("menu.Show KeyFrames",false,true);
     pangolin::Var<bool> menuShowGraph("menu.Show Graph",false,true);
+    pangolin::Var<bool> menuCameraView("menu.Camera View",true,true);
     pangolin::Var<bool> menuShowInertialGraph("menu.Show Inertial Graph",false,true);
     pangolin::Var<bool> menuLocalizationMode("menu.Localization Mode",false,true);
     pangolin::Var<bool> menuReset("menu.Reset",false,false);
@@ -251,7 +252,6 @@ void Viewer::Run()
 
     // ========== CARV ==========
     // // carv: camera close up view
-    bool bCameraView = true;
     pangolin::OpenGlMatrix projectionAbove = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mViewpointF,mViewpointF,
                                                                     mImageWidth/2,mImageHeight/2,0.1,1000);
     pangolin::OpenGlMatrix projectionCamera = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000);
