@@ -1278,7 +1278,6 @@ KeyFrame::KeyFrame(KeyFrame *pKF):
       mvBackupMapPointsId(pKF->mvBackupMapPointsId),
       mpKeyFrameDB(pKF->mpKeyFrameDB),
       mpORBvocabulary(pKF->mpORBvocabulary),
-      mGrid(pKF->mGrid),
       mConnectedKeyFrameWeights(pKF->mConnectedKeyFrameWeights),
       mvpOrderedConnectedKeyFrames(pKF->mvpOrderedConnectedKeyFrames),
       mvOrderedWeights(pKF->mvOrderedWeights),
@@ -1309,8 +1308,7 @@ KeyFrame::KeyFrame(KeyFrame *pKF):
       mvRightToLeftMatch(pKF->mvRightToLeftMatch),
       mvKeysRight(pKF->mvKeysRight),
       NLeft(pKF->NLeft),
-      NRight(pKF->NRight),
-      mGridRight(pKF->mGridRight)
+      NRight(pKF->NRight)
 {
     mnId=pKF->mnId;
 
