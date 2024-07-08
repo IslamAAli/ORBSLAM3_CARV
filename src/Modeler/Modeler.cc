@@ -152,7 +152,7 @@ namespace ORB_SLAM3 {
         }
 
         if (imGray.channels() > 1) // this should be always true
-            cv::cvtColor(imGray,imGray,CV_RGB2GRAY);
+            cv::cvtColor(imGray,imGray,cv::COLOR_RGB2GRAY);
 
         std::vector<LineSegment> lines = DetectLineSegments(imGray);
 
@@ -486,7 +486,7 @@ namespace ORB_SLAM3 {
             }
 
             if (imGray.channels() > 1) // this should be always true
-                cv::cvtColor(imGray, imGray, CV_RGB2GRAY);
+                cv::cvtColor(imGray, imGray, cv::COLOR_RGB2GRAY);
 
             std::vector<LineSegment> lines = DetectLineSegments(imGray);
 
