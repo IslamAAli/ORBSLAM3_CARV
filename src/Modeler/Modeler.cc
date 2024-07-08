@@ -1501,7 +1501,7 @@ namespace ORB_SLAM3 {
         cv::Mat imc;
         im.copyTo(imc);
         if(imc.channels() < 3)
-            cvtColor(imc,imc,CV_GRAY2RGB);
+            cvtColor(imc,imc,cv::COLOR_GRAY2RGB);
 
         if (mmFrameQueue.size() >= mnMaxFrameQueueSize) {
             mmFrameQueue.erase(mmFrameQueue.begin());
@@ -1541,7 +1541,7 @@ namespace ORB_SLAM3 {
         }
 
         if(im.channels() < 3) // this should always be true
-            cvtColor(im,im,CV_GRAY2RGB);
+            cvtColor(im,im,cv::COLOR_GRAY2RGB);
 
         for(size_t i = 0; i < mvLines.size(); i++){
             LineSegment line = mvLines[i];
