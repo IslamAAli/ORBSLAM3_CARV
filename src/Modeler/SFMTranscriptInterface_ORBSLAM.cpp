@@ -348,7 +348,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionWithLinesEntry(KeyFrame
             cv::Point3f pointcv = *it;
 
             const cv::Mat pos = (cv::Mat_<float>(3, 1) << pointcv.x, pointcv.y, pointcv.z);
-            MapPoint* point = new MapPoint(pos, kCopy, kCopy->GetMap());
+            MapPoint* point = new MapPoint(matToEigenVector(pos), kCopy, kCopy->GetMap());
 
             cv::Mat mWorldPos = vector3fToCvMat(point->GetWorldPos());
             matNewPoint(0) = mWorldPos.at<float>(0);
@@ -519,6 +519,15 @@ cv::Mat SFMTranscriptInterface_ORBSLAM::vector3fToCvMat(const Eigen::Vector3f& v
     cvMat.at<float>(0, 2) = vector(2);
 
     return cvMat;
+}
+
+Eigen::Vector3f SFMTranscriptInterface_ORBSLAM::matToEigenVector(const cv::Mat& mat) {
+    assert(mat.rows == 3 && mat.cols == 1 && mat.type() == CV_32FC1);  // Ensure the matrix is 3x1 and float type
+    
+    Eigen::Vector3f vector;
+    vector << mat.at<float>(0, 0), mat.at<float>(1, 0), mat.at<float>(2, 0);
+    
+    return vector;
 }
 
 #endif
