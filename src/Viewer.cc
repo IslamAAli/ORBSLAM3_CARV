@@ -82,7 +82,7 @@ void Viewer::newParameterLoader(Settings *settings) {
 
     // ========== CARV ==========
     // carv params
-    cv::FileStorage fSettings(strSettingPath, cv::FileStorage::READ);
+    cv::FileStorage fSettings(SettingPath, cv::FileStorage::READ);
     mfx = fSettings["Camera.fx"];
     mfy = fSettings["Camera.fy"];
     mcx = fSettings["Camera.cx"];
