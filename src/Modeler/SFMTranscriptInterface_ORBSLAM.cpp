@@ -163,7 +163,7 @@ void SFMTranscriptInterface_ORBSLAM::addFirstKeyFrameInsertionEntry(KeyFrame *k)
 
         // // TODO: Instead of inverting the whole transform, we should be able to just use the negative translation.
         // GetPoseInverse, seems camera position need to be inversed
-        cv::Mat se3WfromC = k->GetPoseInverse();
+        cv::Mat se3WfromC = se3ToCvMat(k->GetPoseInverse());
         matNewCam(0) = se3WfromC.at<float>(0,3);
         matNewCam(1) = se3WfromC.at<float>(1,3);
         matNewCam(2) = se3WfromC.at<float>(2,3);
@@ -484,6 +484,26 @@ std::vector<MapPoint *> SFMTranscriptInterface_ORBSLAM::GetNewPoints(KeyFrame *p
     catch(std::exception & ex){
         dlovi::Exception ex2(ex.what()); ex2.tag("SFMTranscriptInterface_ORBSLAM", "GetReferenceKeyFrame"); cerr << ex2.what() << endl; //ex2.raise();
     }
+}
+
+cv::Mat SFMTranscriptInterface_ORBSLAM::se3ToCvMat(const Sophus::SE3<float>& se3) {
+    // Extract rotation matrix and translation vector
+    Eigen::Matrix3f R = se3.rotationMatrix();
+    Eigen::Vector3f t = se3.translation();
+
+    // Convert rotation matrix to cv::Mat (3x3 CV_32F)
+    cv::Mat cvR(3, 3, CV_32F);
+    cv::eigen2cv(R, cvR);
+
+    // Convert translation vector to cv::Mat (1x3 CV_32F)
+    cv::Mat cvT(1, 3, CV_32F, t.data());
+
+    // Create a 3x4 transformation matrix [R | t]
+    cv::Mat cvTransform(3, 4, CV_32F);
+    cvR.copyTo(cvTransform(cv::Rect(0, 0, 3, 3)));
+    cvT.copyTo(cvTransform(cv::Rect(3, 0, 1, 3)));
+
+    return cvTransform;
 }
 
 #endif

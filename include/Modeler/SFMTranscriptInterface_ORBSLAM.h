@@ -45,6 +45,8 @@ public:
     vector<MapPoint *> GetNewPoints(KeyFrame *pKF);
     // Member Variables
     dlovi::compvis::SFMTranscript m_SFMTranscript;
+
+    cv::Mat se3ToCvMat(const Sophus::SE3<float>& se3);
 private:
 
 
