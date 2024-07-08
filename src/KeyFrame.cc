@@ -1257,7 +1257,7 @@ KeyFrame::KeyFrame(KeyFrame *pKF):
       mnMaxY(pKF->mnMaxY),
       mPrevKF(pKF->mPrevKF),
       mNextKF(pKF->mNextKF),
-      mpImuPreintegrated(pKF->mpImuPreintegrated),
+    //   mpImuPreintegrated(pKF->mpImuPreintegrated),
       mImuCalib(pKF->mImuCalib),
       mnOriginMapId(pKF->mnOriginMapId),
       mNameFile(pKF->mNameFile),
@@ -1308,7 +1308,7 @@ KeyFrame::KeyFrame(KeyFrame *pKF):
       mvRightToLeftMatch(pKF->mvRightToLeftMatch),
       mvKeysRight(pKF->mvKeysRight),
       NLeft(pKF->NLeft),
-      NRight(0)
+      NRight(pKF->NRight)
 {
     mnId=pKF->mnId;
 
