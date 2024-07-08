@@ -495,7 +495,11 @@ cv::Mat SFMTranscriptInterface_ORBSLAM::se3ToCvMat(const Sophus::SE3<float>& se3
     cv::Mat cvTransform = cv::Mat::eye(4, 4, CV_32F);
 
     // Copy rotation matrix (3x3) to top-left corner of transformation matrix
-    cv::Mat(cv::Mat(R.data(), 3, 3, CV_32F)).copyTo(cvTransform(cv::Rect(0, 0, 3, 3)));
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            cvTransform.at<float>(i, j) = R(i, j);
+        }
+    }
 
     // Copy translation vector (1x3) to the last column of transformation matrix
     for (int i = 0; i < 3; ++i) {
