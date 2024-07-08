@@ -174,6 +174,11 @@ public:
     Preintegrated(Preintegrated* pImuPre);
     Preintegrated() {}
     ~Preintegrated() {}
+    // ========== CARV ==========
+    Preintegrated(const Preintegrated&) = delete;
+    Preintegrated& operator=(const Preintegrated&) = delete;
+    // ========== CARV ==========
+
     void CopyFrom(Preintegrated* pImuPre);
     void Initialize(const Bias &b_);
     void IntegrateNewMeasurement(const Eigen::Vector3f &acceleration, const Eigen::Vector3f &angVel, const float &dt);
