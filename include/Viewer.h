@@ -111,6 +111,7 @@ private:
     ModelDrawer* mpModelDrawer;
     float mfx, mfy, mcx, mcy;
     bool mbRGB;
+    string SettingPath;
     // ========== CARV ==========
 
 };

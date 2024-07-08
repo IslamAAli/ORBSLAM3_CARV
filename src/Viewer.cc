@@ -31,6 +31,11 @@ Viewer::Viewer(System* pSystem, FrameDrawer *pFrameDrawer, MapDrawer *pMapDrawer
     mbFinishRequested(false), mbFinished(true), mbStopped(true), mbStopRequested(false)
 // ========== CARV ==========
 {
+    // ========== CARV ==========
+    SettingPath = strSettingPath;
+    // ========== CARV ==========
+
+
     if(settings){
         newParameterLoader(settings);
     }
@@ -77,6 +82,7 @@ void Viewer::newParameterLoader(Settings *settings) {
 
     // ========== CARV ==========
     // carv params
+    cv::FileStorage fSettings(strSettingPath, cv::FileStorage::READ);
     mfx = fSettings["Camera.fx"];
     mfy = fSettings["Camera.fy"];
     mcx = fSettings["Camera.cx"];
@@ -214,21 +220,23 @@ void Viewer::Run()
     // Define Camera Render Object (for view / scene browsing)
     //TODO: map vs. cam edits
     pangolin::OpenGlRenderState s_cam(
-                pangolin::ProjectionMatrix(1024,768,mViewpointF,mViewpointF,512,389,0.1,1000),
-                pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0)
+                // pangolin::ProjectionMatrix(1024,768,mViewpointF,mViewpointF,512,389,0.1,1000),
+                // pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0)
 
                 // ========== CARV ==========
                 // carv: using calibrated camera center and focal length
-                // pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000),
-                // pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0)
+                pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000),
+                pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0)
                 // ========== CARV ==========
                 );
 
     // CARV Edit
+    // ========== CARV ==========
     // Add named OpenGL viewport to window and provide 3D Handler
     pangolin::View& d_cam = pangolin::CreateDisplay()
             .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -mImageWidth/mImageHeight)
             .SetHandler(new pangolin::Handler3D(s_cam));
+    // ========== CARV ==========
 
     pangolin::OpenGlMatrix Twc, Twr;
     Twc.SetIdentity();
