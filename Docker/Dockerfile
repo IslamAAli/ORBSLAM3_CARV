@@ -197,24 +197,28 @@ RUN echo "TESTING2"
 RUN echo "[Dockerfile Info] Installing ORB-SLAM3 ......"
 RUN mkdir -p ~/CARV && \
 	cd ~/CARV && \
-	git clone https://github.com/IslamAAli/ORBSLAM3_CARV.git && \
-	cd ORBSLAM3_CARV && \
-	chmod +x build.sh && \
-	./build.sh   
+	git clone https://github.com/IslamAAli/ORBSLAM3_CARV.git 
 
-# Set the default shell to bash
-SHELL ["/bin/bash", "-c"]
+# RUN mkdir -p ~/CARV && \
+# 	cd ~/CARV && \
+# 	git clone https://github.com/IslamAAli/ORBSLAM3_CARV.git && \
+# 	cd ORBSLAM3_CARV && \
+# 	chmod +x build.sh && \
+# 	./build.sh   
 
-RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:~/CARV/ORBSLAM3_CARV/Examples/ROS" >> /root/.bashrc \
-    && source /opt/ros/kinetic/setup.bash \
-	&& source /root/.bashrc \
-	&& export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/CARV/ORBSLAM3_CARV/Examples/ROS \
-	&& cd ~/CARV \
-	&& cd ORBSLAM3_CARV \
-	&& chmod +x build_ros.sh \
-	&& ./build_ros.sh
+# # Set the default shell to bash
+# SHELL ["/bin/bash", "-c"]
 
-SHELL ["/bin/sh", "-c"]
+# RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:~/CARV/ORBSLAM3_CARV/Examples/ROS" >> /root/.bashrc \
+#     && source /opt/ros/kinetic/setup.bash \
+# 	&& source /root/.bashrc \
+# 	&& export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/CARV/ORBSLAM3_CARV/Examples/ROS \
+# 	&& cd ~/CARV \
+# 	&& cd ORBSLAM3_CARV \
+# 	&& chmod +x build_ros.sh \
+# 	&& ./build_ros.sh
+
+# SHELL ["/bin/sh", "-c"]
 
 # ############################################################################################
 # ############################################################################################
