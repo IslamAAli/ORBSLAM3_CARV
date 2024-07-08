@@ -521,12 +521,5 @@ cv::Mat SFMTranscriptInterface_ORBSLAM::vector3fToCvMat(const Eigen::Vector3f& v
     return cvMat;
 }
 
-Eigen::Vector3f SFMTranscriptInterface_ORBSLAM::matToEigenVector(const cv::Mat& mat) {
-   
-    Eigen::Vector3f vector;
-    vector << mat.at<float>(0, 0), mat.at<float>(1, 0), mat.at<float>(2, 0);
-    
-    return vector;
-}
 
 #endif

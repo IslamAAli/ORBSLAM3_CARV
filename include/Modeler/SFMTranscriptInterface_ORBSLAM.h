@@ -48,8 +48,6 @@ public:
 
     cv::Mat se3ToCvMat(const Sophus::SE3<float>& se3);
     cv::Mat vector3fToCvMat(const Eigen::Vector3f& vector);
-    Eigen::Vector3f matToEigenVector(const cv::Mat& mat) {
-
 private:
 
 
