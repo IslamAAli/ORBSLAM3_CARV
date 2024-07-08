@@ -350,7 +350,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionWithLinesEntry(KeyFrame
             const cv::Mat pos = (cv::Mat_<float>(3, 1) << pointcv.x, pointcv.y, pointcv.z);
             MapPoint* point = new MapPoint(pos, kCopy, kCopy->GetMap());
 
-            cv::Mat mWorldPos = point->GetWorldPos();
+            cv::Mat mWorldPos = vector3fToCvMat(point->GetWorldPos());
             matNewPoint(0) = mWorldPos.at<float>(0);
             matNewPoint(1) = mWorldPos.at<float>(1);
             matNewPoint(2) = mWorldPos.at<float>(2);
@@ -402,7 +402,7 @@ void SFMTranscriptInterface_ORBSLAM::addBundleAdjustmentEntry(set<KeyFrame *> & 
                 nCamIndex = m_mKeyFrame_Index[*it];
 
                 // TODO: Instead of inverting the whole transform, we should be able to just use the negative translation.
-                cv::Mat se3WfromC = (*it)->GetPose();
+                cv::Mat se3WfromC = se3ToCvMat((*it)->GetPose());
                 se3WfromC = se3WfromC.inv();
                 ssTmp << "move cam: " << nCamIndex << ", [" << se3WfromC.at<float>(0,3) << "; " << se3WfromC.at<float>(1,3) << "; "
                       << se3WfromC.at<float>(2,3) << "]";
