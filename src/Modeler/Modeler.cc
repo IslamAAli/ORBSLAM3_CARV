@@ -241,13 +241,13 @@ namespace ORB_SLAM3 {
 
         for (std::set<MapPoint*>::iterator it = spMP.begin(); it != spMP.end(); it++){
             // need to test if xy > 0
-            cv::Point2f xy = pKF->ProjectPointOnCamera((*it)->GetWorldPos());
+            cv::Point2f xy = pKF->ProjectPointOnCamera(CARV_HELPERS::vector3fToCvMat((*it)->GetWorldPos()));
             if(xy.x < 0 || xy.y < 0)
                 continue;
 
             std::vector<cv::Point2f> vXYMatch;
             for (size_t indKFMatch = 0; indKFMatch < vpKFMatch.size(); indKFMatch++) {
-                cv::Point2f xyMatch = vpKFMatch[indKFMatch]->ProjectPointOnCamera((*it)->GetWorldPos());
+                cv::Point2f xyMatch = vpKFMatch[indKFMatch]->ProjectPointOnCamera(CARV_HELPERS::vector3fToCvMat((*it)->GetWorldPos()));
                 if (xyMatch.x < 0 || xyMatch.y < 0){
                     break;
                 }
@@ -1553,7 +1553,7 @@ namespace ORB_SLAM3 {
             std::map<MapPoint*,double> mpMP = line.mmpMPProj;
             for (std::map<MapPoint*, double>::iterator it = mpMP.begin(); it != mpMP.end(); it++){
                 MapPoint * pMP = it->first;
-                cv::Point2f pt = line.mpRefKF->ProjectPointOnCamera(pMP->GetWorldPos());
+                cv::Point2f pt = line.mpRefKF->ProjectPointOnCamera(CARV_HELPERS::vector3fToCvMat(pMP->GetWorldPos()));
                 const float r = 5;
                 cv::Point2f pt1,pt2;
                 pt1.x=pt.x-r;
