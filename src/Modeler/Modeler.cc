@@ -1195,7 +1195,7 @@ namespace ORB_SLAM3 {
         for (auto it = mpMPScore.begin(); it != mpMPScore.end(); it++){
             if (it->second >= 5){
                 vpMPBestScore.push_back(it->first);
-                LinePoint lpMapPoint(cv::Point3f(it->first->GetWorldPos()));
+                LinePoint lpMapPoint(cv::Point3f(CARV_HELPERS::vector3fToCvMat(it->first->GetWorldPos())));
                 vLPScoreMapPoint.push_back(lpMapPoint);
             }
         }
@@ -1217,7 +1217,7 @@ namespace ORB_SLAM3 {
         // all map points
         std::vector<LinePoint> vLPAllMapPoint;
         for (auto it = mpMPScore.begin(); it != mpMPScore.end(); it++){
-            LinePoint lpMapPoint(cv::Point3f(it->first->GetWorldPos()));
+            LinePoint lpMapPoint(cv::Point3f(CARV_HELPERS::vector3fToCvMat(it->first->GetWorldPos())));
             vLPAllMapPoint.push_back(lpMapPoint);
         }
 
