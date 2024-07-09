@@ -163,7 +163,8 @@ include/GeometricTools.h
 include/TwoViewReconstruction.h
 include/SerializationUtils.h
 include/Config.h
-include/Settings.h)
+include/Settings.h
+include/Modeler/converters.h)
 
 add_subdirectory(Thirdparty/g2o)
 
