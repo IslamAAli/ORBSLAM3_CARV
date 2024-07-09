@@ -638,8 +638,8 @@ namespace ORB_SLAM3 {
                     continue;
 
                 // vls in second keyframe
-                cv::Point2f startVLS2fMatch = pKFMatch->ProjectPointOnCamera(vls.mpMPStart->GetWorldPos());
-                cv::Point2f endVLS2fMatch = pKFMatch->ProjectPointOnCamera(vls.mpMPEnd->GetWorldPos());
+                cv::Point2f startVLS2fMatch = pKFMatch->ProjectPointOnCamera(CARV_HELPERS::vector3fToCvMat(vls.mpMPStart->GetWorldPos()));
+                cv::Point2f endVLS2fMatch = pKFMatch->ProjectPointOnCamera(CARV_HELPERS::vector3fToCvMat(vls.mpMPEnd->GetWorldPos()));
                 // test if the virtual line segment is in image, this should be always be false
                 if (startVLS2fMatch.x < 0 || startVLS2fMatch.y < 0 || endVLS2fMatch.x < 0 || endVLS2fMatch.y < 0)
                     continue;
@@ -649,8 +649,8 @@ namespace ORB_SLAM3 {
                     continue;
 
                 // make sure the VLS is not perpendicular with the camera plane
-                cv::Mat startVLS3Mat = pKF->TransformPointWtoC(vls.mpMPStart->GetWorldPos());
-                cv::Mat endVLS3Mat = pKF->TransformPointWtoC(vls.mpMPEnd->GetWorldPos());
+                cv::Mat startVLS3Mat = pKF->TransformPointWtoC(CARV_HELPERS::vector3fToCvMat(vls.mpMPStart->GetWorldPos()));
+                cv::Mat endVLS3Mat = pKF->TransformPointWtoC(CARV_HELPERS::vector3fToCvMat(vls.mpMPEnd->GetWorldPos()));
                 cv::Mat diffxyz = endVLS3Mat - startVLS3Mat;
                 double cosS = diffxyz.dot(startVLS3Mat) / cv::norm(diffxyz) / cv::norm(startVLS3Mat);
                 double cosE = diffxyz.dot(endVLS3Mat) / cv::norm(diffxyz) / cv::norm(endVLS3Mat);
@@ -660,8 +660,8 @@ namespace ORB_SLAM3 {
                     continue;
 
                 // make sure the VLS is not perpendicular with the camera plane
-                cv::Mat startVLS3MatMatch = pKFMatch->TransformPointWtoC(vls.mpMPStart->GetWorldPos());
-                cv::Mat endVLS3MatMatch = pKFMatch->TransformPointWtoC(vls.mpMPEnd->GetWorldPos());
+                cv::Mat startVLS3MatMatch = pKFMatch->TransformPointWtoC(CARV_HELPERS::vector3fToCvMat(vls.mpMPStart->GetWorldPos()));
+                cv::Mat endVLS3MatMatch = pKFMatch->TransformPointWtoC(CARV_HELPERS::vector3fToCvMat(vls.mpMPEnd->GetWorldPos()));
                 cv::Mat diffxyzMatch = endVLS3Mat - startVLS3Mat;
                 double cosSMatch = diffxyzMatch.dot(startVLS3MatMatch) / cv::norm(diffxyzMatch) / cv::norm(startVLS3MatMatch);
                 double cosEMatch = diffxyzMatch.dot(endVLS3MatMatch) / cv::norm(diffxyzMatch) / cv::norm(endVLS3MatMatch);
