@@ -796,7 +796,7 @@ namespace ORB_SLAM3 {
                     intersect3D.at<float>(2) = intersect3f.z;
 
                     // project 3D intersection onto the second keyframe
-                    cv::Point2f lineCrossMatch = pKFMatch->ProjectPointOnCamera(intersect3D);
+                    cv::Point2f lineCrossMatch = pKFMatch->ProjectPointOnCamera(CARV_HELPERS::se3ToCvMat(intersect3D));
                     if (lineCrossMatch.x < 0 || lineCrossMatch.y < 0)
                         continue;
 
