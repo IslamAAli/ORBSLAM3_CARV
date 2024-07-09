@@ -4,6 +4,7 @@
 #include "Modeler/SFMTranscriptInterface_ORBSLAM.h"
 #include "Modeler/Exception.h"
 #include "Modeler/Matrix.h"
+#include "Modeler/converters.h"
 
 // Header files needed by EDLines
 #include <stdio.h>
@@ -163,7 +164,7 @@ void SFMTranscriptInterface_ORBSLAM::addFirstKeyFrameInsertionEntry(KeyFrame *k)
 
         // // TODO: Instead of inverting the whole transform, we should be able to just use the negative translation.
         // GetPoseInverse, seems camera position need to be inversed
-        cv::Mat se3WfromC = se3ToCvMat(k->GetPoseInverse());
+        cv::Mat se3WfromC = CARV_HELPERS::se3ToCvMat(k->GetPoseInverse());
         matNewCam(0) = se3WfromC.at<float>(0,3);
         matNewCam(1) = se3WfromC.at<float>(1,3);
         matNewCam(2) = se3WfromC.at<float>(2,3);
@@ -186,7 +187,7 @@ void SFMTranscriptInterface_ORBSLAM::addFirstKeyFrameInsertionEntry(KeyFrame *k)
                 continue;
             if(m_mMapPoint_Index.count(point) == 0){
                 // It's a new point:
-                cv::Mat mWorldPos = vector3fToCvMat(point->GetWorldPos());
+                cv::Mat mWorldPos = CARV_HELPERS::vector3fToCvMat(point->GetWorldPos());
                 matNewPoint(0) = mWorldPos.at<float>(0);
                 matNewPoint(1) = mWorldPos.at<float>(1);
                 matNewPoint(2) = mWorldPos.at<float>(2);
@@ -227,7 +228,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionEntry(KeyFrame *k){
 
         // TODO: Instead of inverting the whole transform, we should be able to just use the negative translation.
         // GetPoseInverse, seems camera position need to be inversed
-        cv::Mat se3WfromC = se3ToCvMat(k->GetPoseInverse());
+        cv::Mat se3WfromC = CARV_HELPERS::se3ToCvMat(k->GetPoseInverse());
         matNewCam(0) = se3WfromC.at<float>(0,3);
         matNewCam(1) = se3WfromC.at<float>(1,3);
         matNewCam(2) = se3WfromC.at<float>(2,3);
@@ -266,7 +267,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionEntry(KeyFrame *k){
                 }
 
                 // It's a new point:
-                cv::Mat mWorldPos = vector3fToCvMat(point->GetWorldPos());
+                cv::Mat mWorldPos = CARV_HELPERS::vector3fToCvMat(point->GetWorldPos());
                 matNewPoint(0) = mWorldPos.at<float>(0);
                 matNewPoint(1) = mWorldPos.at<float>(1);
                 matNewPoint(2) = mWorldPos.at<float>(2);
@@ -328,7 +329,7 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionWithLinesEntry(KeyFrame
 
         // TODO: Instead of inverting the whole transform, we should be able to just use the negative translation.
         // GetPoseInverse, seems camera position need to be inversed
-        cv::Mat se3WfromC = se3ToCvMat(kCopy->GetPoseInverse());
+        cv::Mat se3WfromC = CARV_HELPERS::se3ToCvMat(kCopy->GetPoseInverse());
         matNewCam(0) = se3WfromC.at<float>(0,3);
         matNewCam(1) = se3WfromC.at<float>(1,3);
         matNewCam(2) = se3WfromC.at<float>(2,3);
@@ -348,9 +349,9 @@ void SFMTranscriptInterface_ORBSLAM::addKeyFrameInsertionWithLinesEntry(KeyFrame
             cv::Point3f pointcv = *it;
 
             const cv::Mat pos = (cv::Mat_<float>(3, 1) << pointcv.x, pointcv.y, pointcv.z);
-            MapPoint* point = new MapPoint(matToEigenVector3f(pos), kCopy, kCopy->GetMap());
+            MapPoint* point = new MapPoint(CARV_HELPERS::matToEigenVector3f(pos), kCopy, kCopy->GetMap());
 
-            cv::Mat mWorldPos = vector3fToCvMat(point->GetWorldPos());
+            cv::Mat mWorldPos = CARV_HELPERS::vector3fToCvMat(point->GetWorldPos());
             matNewPoint(0) = mWorldPos.at<float>(0);
             matNewPoint(1) = mWorldPos.at<float>(1);
             matNewPoint(2) = mWorldPos.at<float>(2);
@@ -402,7 +403,7 @@ void SFMTranscriptInterface_ORBSLAM::addBundleAdjustmentEntry(set<KeyFrame *> & 
                 nCamIndex = m_mKeyFrame_Index[*it];
 
                 // TODO: Instead of inverting the whole transform, we should be able to just use the negative translation.
-                cv::Mat se3WfromC = se3ToCvMat((*it)->GetPose());
+                cv::Mat se3WfromC = CARV_HELPERS::se3ToCvMat((*it)->GetPose());
                 se3WfromC = se3WfromC.inv();
                 ssTmp << "move cam: " << nCamIndex << ", [" << se3WfromC.at<float>(0,3) << "; " << se3WfromC.at<float>(1,3) << "; "
                       << se3WfromC.at<float>(2,3) << "]";
@@ -486,54 +487,6 @@ std::vector<MapPoint *> SFMTranscriptInterface_ORBSLAM::GetNewPoints(KeyFrame *p
     }
 }
 
-cv::Mat SFMTranscriptInterface_ORBSLAM::se3ToCvMat(const Sophus::SE3<float>& se3) {
-    // Extract rotation matrix and translation vector
-    Eigen::Matrix3f R = se3.rotationMatrix();
-    Eigen::Vector3f t = se3.translation();
-
-    // Create a 4x4 transformation matrix (CV_32F)
-    cv::Mat cvTransform = cv::Mat::eye(4, 4, CV_32F);
-
-    // Copy rotation matrix (3x3) to top-left corner of transformation matrix
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            cvTransform.at<float>(i, j) = R(i, j);
-        }
-    }
-
-    // Copy translation vector (1x3) to the last column of transformation matrix
-    for (int i = 0; i < 3; ++i) {
-        cvTransform.at<float>(i, 3) = t(i);
-    }
-
-    return cvTransform;
-}
-
-cv::Mat SFMTranscriptInterface_ORBSLAM::vector3fToCvMat(const Eigen::Vector3f& vector) {
-    // Create cv::Mat with 1 row, 3 columns, and CV_32F type
-    cv::Mat cvMat(1, 3, CV_32F);
-
-    // Copy data from Eigen vector to cv::Mat
-    cvMat.at<float>(0, 0) = vector(0);
-    cvMat.at<float>(0, 1) = vector(1);
-    cvMat.at<float>(0, 2) = vector(2);
-
-    return cvMat;
-}
-
-Eigen::Vector3f SFMTranscriptInterface_ORBSLAM::matToEigenVector3f(const cv::Mat& mat) {
-    Eigen::Vector3f eigenVec;
-
-    if (mat.rows == 3 && mat.cols == 1 && mat.type() == CV_32F) {
-        eigenVec << mat.at<float>(0, 0), mat.at<float>(1, 0), mat.at<float>(2, 0);
-    } else {
-        // Handle incorrect dimensions or types
-        // For simplicity, here we throw an exception if the input is not as expected
-        throw std::invalid_argument("Input cv::Mat is not a 3x1 matrix of type CV_32F");
-    }
-
-    return eigenVec;
-}
 
 
 #endif

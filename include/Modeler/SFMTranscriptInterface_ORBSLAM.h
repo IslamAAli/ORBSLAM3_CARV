@@ -46,10 +46,6 @@ public:
     // Member Variables
     dlovi::compvis::SFMTranscript m_SFMTranscript;
 
-    cv::Mat se3ToCvMat(const Sophus::SE3<float>& se3);
-    cv::Mat vector3fToCvMat(const Eigen::Vector3f& vector);
-    Eigen::Vector3f matToEigenVector3f(const cv::Mat& mat);
-
 private:
 
 
