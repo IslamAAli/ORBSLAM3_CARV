@@ -16,6 +16,7 @@ LS *DetectLinesByED(unsigned char *srcImg, int width, int height, int *pNoLines)
 
 using namespace std;
 using namespace dlovi;
+using namespace CARV_HELPERS;
 
 // Constructors and Destructors
 
