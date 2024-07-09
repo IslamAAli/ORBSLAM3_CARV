@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <include/Modeler/Modeler.h>
+#include "Modeler/converters.h"
+
 
 /// Function prototype for DetectEdgesByED exported by EDLinesLib.a
 LS *DetectLinesByED(unsigned char *srcImg, int width, int height, int *pNoLines);
@@ -701,7 +703,7 @@ namespace ORB_SLAM3 {
                     cv::Point2f intersect2f = startLS2f + uLS * seLS2f;
 
                     // intersection found, project it to 3d
-                    cv::Mat TwcKF = pKF->GetPoseInverse();
+                    cv::Mat TwcKF = CARV_HELPERS::se3ToCvMat(pKF->GetPoseInverse());
                     cv::Mat RwcKF = TwcKF.rowRange(0, 3).colRange(0, 3);
                     cv::Mat twcKF = TwcKF.rowRange(0, 3).col(3);
                     float PcX = (intersect2f.x - pKF->cx) / pKF->fx;
