@@ -121,6 +121,7 @@ src/TwoViewReconstruction.cc
 src/Config.cc
 src/Settings.cc
 # ========== CARV ==========
+src/Modeler/converters.cpp
 src/Modeler/FreespaceDelaunayAlgorithm.cc
 src/Modeler/GraphWrapper_Boost.cc
 src/Modeler/lovimath.cc
@@ -163,8 +164,7 @@ include/GeometricTools.h
 include/TwoViewReconstruction.h
 include/SerializationUtils.h
 include/Config.h
-include/Settings.h
-include/Modeler/converters.h)
+include/Settings.h)
 
 add_subdirectory(Thirdparty/g2o)
 
