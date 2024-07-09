@@ -1042,8 +1042,8 @@ namespace ORB_SLAM3 {
                                     continue;
 
                                 // position of projection of vls end points in neighbour kf
-                                cv::Point2f startVLS2fNB = pKFNB->ProjectPointOnCamera(vlsNB.mpMPStart->GetWorldPos());
-                                cv::Point2f endVLS2fNB = pKFNB->ProjectPointOnCamera(vlsNB.mpMPEnd->GetWorldPos());
+                                cv::Point2f startVLS2fNB = pKFNB->ProjectPointOnCamera(CARV_HELPERS::vector3fToCvMat(vlsNB.mpMPStart->GetWorldPos()));
+                                cv::Point2f endVLS2fNB = pKFNB->ProjectPointOnCamera(CARV_HELPERS::vector3fToCvMat(vlsNB.mpMPEnd->GetWorldPos()));
 //                            // test if the virtual line segment is in image, this should be always be false
 //                            if (startVLS2fNB.x < 0 || startVLS2fNB.y < 0 || endVLS2fNB.x < 0 || endVLS2fNB.y < 0)
 //                                continue;
