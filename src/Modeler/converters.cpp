@@ -5,7 +5,7 @@
 
 namespace CARV_HELPERS
 {
-    cv::Mat SFMTranscriptInterface_ORBSLAM::se3ToCvMat(const Sophus::SE3<float>& se3) {
+    cv::Mat se3ToCvMat(const Sophus::SE3<float>& se3) {
         // Extract rotation matrix and translation vector
         Eigen::Matrix3f R = se3.rotationMatrix();
         Eigen::Vector3f t = se3.translation();
@@ -28,7 +28,7 @@ namespace CARV_HELPERS
         return cvTransform;
     }
 
-    cv::Mat SFMTranscriptInterface_ORBSLAM::vector3fToCvMat(const Eigen::Vector3f& vector) {
+    cv::Mat vector3fToCvMat(const Eigen::Vector3f& vector) {
         // Create cv::Mat with 1 row, 3 columns, and CV_32F type
         cv::Mat cvMat(1, 3, CV_32F);
 
@@ -40,7 +40,7 @@ namespace CARV_HELPERS
         return cvMat;
     }
 
-    Eigen::Vector3f SFMTranscriptInterface_ORBSLAM::matToEigenVector3f(const cv::Mat& mat) {
+    Eigen::Vector3f matToEigenVector3f(const cv::Mat& mat) {
         Eigen::Vector3f eigenVec;
 
         if (mat.rows == 3 && mat.cols == 1 && mat.type() == CV_32F) {

@@ -9,11 +9,11 @@
 
 namespace CARV_HELPERS
 {
-    cv::Mat SFMTranscriptInterface_ORBSLAM::se3ToCvMat(const Sophus::SE3<float>& se3);
+    cv::Mat se3ToCvMat(const Sophus::SE3<float>& se3);
 
-    cv::Mat SFMTranscriptInterface_ORBSLAM::vector3fToCvMat(const Eigen::Vector3f& vector);
+    cv::Mat vector3fToCvMat(const Eigen::Vector3f& vector);
 
-    Eigen::Vector3f SFMTranscriptInterface_ORBSLAM::matToEigenVector3f(const cv::Mat& mat);
+    Eigen::Vector3f matToEigenVector3f(const cv::Mat& mat);
 }
 
 #endif
