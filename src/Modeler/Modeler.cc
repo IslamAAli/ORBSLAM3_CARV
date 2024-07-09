@@ -365,8 +365,8 @@ namespace ORB_SLAM3 {
 
             if (pMPFirst != pMPLast && tLast - tFirst > TH_MP_RATIO_DIST) {
                 //TODO: using the first and last at this time, probably change to svd
-                cv::Mat p1Mat = pMPFirst->GetWorldPos().clone();
-                cv::Mat p2Mat = pMPLast->GetWorldPos().clone();
+                cv::Mat p1Mat = CARV_HELPERS::vector3fToCvMat(pMPFirst->GetWorldPos()).clone();
+                cv::Mat p2Mat = CARV_HELPERS::vector3fToCvMat(pMPLast->GetWorldPos()).clone();
 
                 cv::Mat p1C = pKF->TransformPointWtoC(p1Mat);
                 cv::Mat p2C = pKF->TransformPointWtoC(p2Mat);
