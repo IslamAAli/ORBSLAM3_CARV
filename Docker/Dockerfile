@@ -182,6 +182,7 @@ RUN apt-get update && \
 # ------------------------------------------------------------------------------------------
 # [6] Install SLAM CARV
 
+RUN echo "CARV dependencies "
 RUN apt-get update && apt-get install -y \
 	libpcap-dev \
 	libssl-dev \ 
