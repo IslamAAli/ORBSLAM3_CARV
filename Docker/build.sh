@@ -9,4 +9,4 @@ echo "> VERSION: 1.0"
 echo "========================================================================================================="
 
                                                                                                          
-docker build --rm -t islamaali/orbslam3_carv-docker:v1.0 .
+docker build --rm --no-cache -t islamaali/orbslam3_carv-docker:v1.0 .
