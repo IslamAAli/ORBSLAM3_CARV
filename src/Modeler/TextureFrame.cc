@@ -33,9 +33,9 @@ namespace ORB_SLAM3 {
 
         mFrameID = pF->mnId;
         // GetPose instead GetPoseInverse, seems camera position need to be inversed
-        mRcw = CARV_HELPERS::se3ToCvMat(pF->mTcw).rowRange(0, 3).colRange(0, 3);
-        mtcw = CARV_HELPERS::se3ToCvMat(pF->mTcw).rowRange(0, 3).col(3);
-        mTwc = CARV_HELPERS::se3ToCvMat(pF->mTcw).inv();
+        mRcw = CARV_HELPERS::se3ToCvMat(pF->GetPose()).rowRange(0, 3).colRange(0, 3);
+        mtcw = CARV_HELPERS::se3ToCvMat(pF->GetPose()).rowRange(0, 3).col(3);
+        mTwc = CARV_HELPERS::se3ToCvMat(pF->GetPose()).inv();
 
         mfx = pF->fx;
         mfy = pF->fy;
