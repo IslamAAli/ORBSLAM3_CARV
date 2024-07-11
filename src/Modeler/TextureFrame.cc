@@ -3,6 +3,7 @@
 //
 
 #include "Modeler/TextureFrame.h"
+#include "Modeler/converters.h"
 
 namespace ORB_SLAM3 {
 
@@ -12,9 +13,9 @@ namespace ORB_SLAM3 {
 
         mFrameID = pKF->mnFrameId;
         // GetPose instead GetPoseInverse, seems camera position need to be inversed
-        mRcw = pKF->GetPose().rowRange(0, 3).colRange(0, 3);
-        mtcw = pKF->GetPose().rowRange(0, 3).col(3);
-        mTwc = pKF->GetPoseInverse();
+        mRcw = CARV_HELPERS::se3ToCvMat(pKF->GetPose()).rowRange(0, 3).colRange(0, 3);
+        mtcw = CARV_HELPERS::se3ToCvMat(pKF->GetPose()).rowRange(0, 3).col(3);
+        mTwc = CARV_HELPERS::se3ToCvMat(pKF->GetPoseInverse());
 
         mfx = pKF->fx;
         mfy = pKF->fy;
@@ -32,9 +33,9 @@ namespace ORB_SLAM3 {
 
         mFrameID = pF->mnId;
         // GetPose instead GetPoseInverse, seems camera position need to be inversed
-        mRcw = pF->mTcw.rowRange(0, 3).colRange(0, 3);
-        mtcw = pF->mTcw.rowRange(0, 3).col(3);
-        mTwc = pF->mTcw.inv();
+        mRcw = CARV_HELPERS::se3ToCvMat(pF->mTcw).rowRange(0, 3).colRange(0, 3);
+        mtcw = CARV_HELPERS::se3ToCvMat(pF->mTcw).rowRange(0, 3).col(3);
+        mTwc = CARV_HELPERS::se3ToCvMat(pF->mTcw).inv();
 
         mfx = pF->fx;
         mfy = pF->fy;
