@@ -627,8 +627,8 @@ namespace ORB_SLAM3 {
 
                 VirtualLineSegment& vls = vVLS[indexVLS];
 
-                cv::Point2f startVLS2f = pKF->ProjectPointOnCamera(vls.mpMPStart->GetWorldPos());
-                cv::Point2f endVLS2f = pKF->ProjectPointOnCamera(vls.mpMPEnd->GetWorldPos());
+                cv::Point2f startVLS2f = pKF->ProjectPointOnCamera(CARV_HELPERS::vector3fToCvMat(vls.mpMPStart->GetWorldPos()));
+                cv::Point2f endVLS2f = pKF->ProjectPointOnCamera(CARV_HELPERS::vector3fToCvMat(vls.mpMPEnd->GetWorldPos()));
                 // test if the virtual line segment is in image, this should be always be false
                 if (startVLS2f.x < 0 || startVLS2f.y < 0 || endVLS2f.x < 0 || endVLS2f.y < 0)
                     continue;
