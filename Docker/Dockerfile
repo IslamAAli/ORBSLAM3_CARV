@@ -182,22 +182,18 @@ RUN apt-get update && \
 # ------------------------------------------------------------------------------------------
 # [6] Install SLAM CARV
 
-# RUN apt-get update && apt-get install -y \
-# 	libpcap-dev \
-# 	libssl-dev \ 
-# 	libboost-dev \
-# 	libboost-serialization-dev \
-# 	libopenblas-dev \
-# 	libcgal-dev \ 
-#     libcgal-qt5-dev \
-# 	ros-kinetic-libg2o \
-# 	ros-kinetic-cv-bridge
+RUN apt-get update && apt-get install -y \
+	libpcap-dev \
+	libssl-dev \ 
+	libboost-dev \
+	libboost-serialization-dev \
+	libopenblas-dev \
+	libcgal-dev \ 
+    libcgal-qt5-dev \
+	ros-kinetic-libg2o \
+	ros-kinetic-cv-bridge
 
-# RUN echo "TESTING2"
-# RUN echo "[Dockerfile Info] Installing ORB-SLAM3 ......"
-# RUN mkdir -p ~/CARV && \
-# 	cd ~/CARV && \
-# 	git clone https://github.com/IslamAAli/ORBSLAM3_CARV.git 
+RUN echo "[Dockerfile Info] Installing ORB-SLAM3 ......"
 
 RUN mkdir -p ~/CARV && \
 	cd ~/CARV && \
