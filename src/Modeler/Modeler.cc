@@ -169,7 +169,7 @@ namespace ORB_SLAM3 {
         for (auto it = vKFBestCov.begin(); it != vKFBestCov.end(); it++) {
             if ((*it)->isBad())
                 continue;
-            if (cv::norm(pKF->GetTranslation() - (*it)->GetTranslation()) < TH_KF_DIST * medianDepth)
+            if (cv::norm(CARV_HELPERS::vector3fToCvMat(pKF->GetTranslation()) - CARV_HELPERS::vector3fToCvMat((*it)->GetTranslation())) < TH_KF_DIST * medianDepth)
                 continue;
             // the kf must be in past
             auto itFind = mmpKFvLS.find(*it);
@@ -178,7 +178,7 @@ namespace ORB_SLAM3 {
 
             bool notNear = true;
             for (size_t indKFMatch = 0; indKFMatch < vpKFMatch.size(); indKFMatch++){
-                double distFromKF = cv::norm(vpKFMatch[indKFMatch]->GetTranslation() - (*it)->GetTranslation());
+                double distFromKF = cv::norm(CARV_HELPERS::vector3fToCvMat(vpKFMatch[indKFMatch]->GetTranslation()) - CARV_HELPERS::vector3fToCvMat((*it)->GetTranslation()));
                 // make sure the kf are distant from each other
                 if (distFromKF < TH_KF_DIST * medianDepth)
                     notNear = false;
@@ -542,7 +542,7 @@ namespace ORB_SLAM3 {
                 // if it is not a best covisible keyframe
                 if (std::find(vKFBestCov.begin(), vKFBestCov.end(), pKFMatch) == vKFBestCov.end())
                     continue;
-                if (cv::norm(pKF->GetTranslation() - pKFMatch->GetTranslation()) < TH_KF_DIST*pKF->ComputeSceneMedianDepth(2))
+                if (cv::norm(CARV_HELPERS::vector3fToCvMat(pKF->GetTranslation()) - CARV_HELPERS::vector3fToCvMat(pKFMatch->GetTranslation())) < TH_KF_DIST*pKF->ComputeSceneMedianDepth(2))
                     continue;
                 vpairPKF.push_back(std::make_pair(pKF,pKFMatch));
                 break;
@@ -981,23 +981,23 @@ namespace ORB_SLAM3 {
                             continue;
                         if (pKFNB->isBad())
                             continue;
-                        if (cv::norm(pKF->GetTranslation() - pKFNB->GetTranslation()) < TH_KF_DIST*pKF->ComputeSceneMedianDepth(2))
+                        if (cv::norm(CARV_HELPERS::vector3fToCvMat(pKF->GetTranslation()) - CARV_HELPERS::vector3fToCvMat(pKFNB->GetTranslation())) < TH_KF_DIST*pKF->ComputeSceneMedianDepth(2))
                             continue;
-                        if (cv::norm(pKFMatch->GetTranslation() - pKFNB->GetTranslation()) < TH_KF_DIST*pKFMatch->ComputeSceneMedianDepth(2))
+                        if (cv::norm(CARV_HELPERS::vector3fToCvMat(pKFMatch->GetTranslation()) - CARV_HELPERS::vector3fToCvMat(pKFNB->GetTranslation())) < TH_KF_DIST*pKFMatch->ComputeSceneMedianDepth(2))
                             continue;
                         // avoid duplicate neighbour view
                         if (std::find(vKFNB.begin(),vKFNB.end(),pKFNB) != vKFNB.end())
                             continue;
 //                        // try filter out neighbour kf that can lead to false line point match
-//                        cv::Mat diffMatch = pKF->GetTranslation() - pKFMatch->GetTranslation();
-//                        cv::Mat diffNB = pKF->GetTranslation() - pKFNB->GetTranslation();
+//                        cv::Mat diffMatch = CARV_HELPERS::vector3fToCvMat(pKF->GetTranslation()) - CARV_HELPERS::vector3fToCvMat(pKFMatch->GetTranslation());
+//                        cv::Mat diffNB = CARV_HELPERS::vector3fToCvMat(pKF->GetTranslation()) - CARV_HELPERS::vector3fToCvMat(pKFNB->GetTranslation());
 //                        double cosDiff = diffMatch.dot(diffNB) / cv::norm(diffMatch) / cv::norm(diffNB);
 //                        double angleDiff = std::acos(std::abs(cosDiff)) * 180 / CV_PI;
 //                        if (angleDiff < MIN_VLS_ANGLE)
 //                            continue;
                         bool nearOtherKFNB = false;
                         for (auto itNB = vKFNB.begin(); itNB != vKFNB.end(); itNB++){
-                            if (cv::norm((*itNB)->GetTranslation() - pKFNB->GetTranslation()) < TH_KF_DIST*(*itNB)->ComputeSceneMedianDepth(2)){
+                            if (cv::norm(CARV_HELPERS::vector3fToCvMat((*itNB)->GetTranslation()) - CARV_HELPERS::vector3fToCvMat(pKFNB->GetTranslation())) < TH_KF_DIST*(*itNB)->ComputeSceneMedianDepth(2)){
                                 nearOtherKFNB = true;
                                 break;
                             }
