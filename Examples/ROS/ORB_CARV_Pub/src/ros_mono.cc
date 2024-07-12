@@ -30,7 +30,8 @@
 
 #include<opencv2/core/core.hpp>
 
-#include"../../../include/System.h"
+#include "../../../include/System.h"
+#include "../../../include/Modeler/converters.h"
 
 #include "../../../include/KeyFrame.h"
 // #include "../../../include/MapPoint.h"
@@ -111,7 +112,7 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
       int nowMaxId=mpSLAM->mpAtlas->GetCurrentMap()->GetMaxKFid();
       if(nowMaxId > max_kfId)
       {
-        cv::Mat TWC = pKF->GetPoseInverse();//return TWC
+        cv::Mat TWC = CARV_HELPERS::se3ToCvMat(pKF->GetPoseInverse());//return TWC
 
         cout<<"key frame mnId: "<<pKF->mnId<<endl;//int--------------------------------------debug
         cout.precision(15);
