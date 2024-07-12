@@ -204,6 +204,9 @@ public:
     // ========== CARV ==========
     //CARV: Modeler that take map logs to create and display the reconstructed model
     Modeler* mpModeler;
+    // Map structure that stores the pointers to all KeyFrames and MapPoints.
+    //Map* mpMap;
+    Atlas* mpAtlas; // make it public for the CARV system
     // ========== CARV ==========
 
 private:
@@ -221,10 +224,6 @@ private:
 
     // KeyFrame database for place recognition (relocalization and loop detection).
     KeyFrameDatabase* mpKeyFrameDatabase;
-
-    // Map structure that stores the pointers to all KeyFrames and MapPoints.
-    //Map* mpMap;
-    Atlas* mpAtlas;
 
     // Tracker. It receives a frame and computes the associated camera pose.
     // It also decides when to insert a new keyframe, create some new MapPoints and
