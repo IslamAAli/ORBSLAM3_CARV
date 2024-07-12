@@ -206,6 +206,7 @@ RUN mkdir -p ~/CARV && \
 # Set the default shell to bash
 SHELL ["/bin/bash", "-c"]
 
+RUN git pull
 RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:~/CARV/ORBSLAM3_CARV/Examples/ROS" >> /root/.bashrc \
     && source /opt/ros/kinetic/setup.bash \
 	&& source /root/.bashrc \
