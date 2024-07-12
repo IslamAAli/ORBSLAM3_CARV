@@ -212,7 +212,7 @@ RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:~/CARV/ORBSLAM3_CARV/Exam
 	&& export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/CARV/ORBSLAM3_CARV/Examples/ROS \
 	&& cd ~/CARV \
 	&& cd ORBSLAM3_CARV \
-	&& git pull
+	&& git pull \
 	&& chmod +x build_ros.sh \
 	&& ./build_ros.sh
 
