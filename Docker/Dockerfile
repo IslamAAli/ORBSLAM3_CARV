@@ -5,7 +5,7 @@ MAINTAINER Islam A. Ali <islam.a.mustafa@gmail.com>
 
 # ------------------------------------------------------------------------------------------
 # Definitions
-ENV OPENCV_VERSION 4.5.4
+ENV OPENCV_VERSION 3.4.1
 ENV OPENCV_DOWNLOAD_URL https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip
 ENV OpenCV_DIR opencv-$OPENCV_VERSION
 ENV EIGEN_VERSION 3.3.2
