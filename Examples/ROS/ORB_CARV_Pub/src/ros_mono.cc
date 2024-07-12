@@ -108,7 +108,7 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
     ORB_SLAM3::KeyFrame* pKF = mpSLAM->mpAtlas->GetCurrentMap()->newestKeyFrame;;
     if(pKF != NULL)
     {
-      int nowMaxId=mpSLAM->mpMap->GetMaxKFid();
+      int nowMaxId=mpSLAM->mpAtlas->GetCurrentMap()->GetMaxKFid();
       if(nowMaxId > max_kfId)
       {
         cv::Mat TWC = pKF->GetPoseInverse();//return TWC
