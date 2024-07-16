@@ -195,6 +195,7 @@ RUN apt-get update && apt-get install -y \
 	ros-kinetic-cv-bridge
 
 RUN echo "[Dockerfile Info] Installing ORB-SLAM3 and CARV ......"
+RUN echo "[Dockerfile Info] ORB-SLAM3 as library ......"
 
 RUN mkdir -p ~/CARV && \
 	cd ~/CARV && \
@@ -203,20 +204,20 @@ RUN mkdir -p ~/CARV && \
 	chmod +x build.sh && \
 	./build.sh   
 
-# # Set the default shell to bash
-# SHELL ["/bin/bash", "-c"]
+# Set the default shell to bash
+SHELL ["/bin/bash", "-c"]
 
-# RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:~/CARV/ORBSLAM3_CARV/Examples/ROS" >> /root/.bashrc \
-#     && source /opt/ros/kinetic/setup.bash \
-# 	&& source /root/.bashrc \
-# 	&& export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/CARV/ORBSLAM3_CARV/Examples/ROS \
-# 	&& cd ~/CARV \
-# 	&& cd ORBSLAM3_CARV \
-# 	&& git pull \
-# 	&& chmod +x build_ros.sh \
-# 	&& ./build_ros.sh
+RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:~/CARV/ORBSLAM3_CARV/Examples/ROS" >> /root/.bashrc \
+    && source /opt/ros/kinetic/setup.bash \
+	&& source /root/.bashrc \
+	&& export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/CARV/ORBSLAM3_CARV/Examples/ROS \
+	&& cd ~/CARV \
+	&& cd ORBSLAM3_CARV \
+	&& git pull \
+	&& chmod +x build_ros.sh \
+	&& ./build_ros.sh
 
-# SHELL ["/bin/sh", "-c"]
+SHELL ["/bin/sh", "-c"]
 
 # ############################################################################################
 # ############################################################################################
