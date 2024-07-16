@@ -27,8 +27,8 @@ Camera1.cy: 394.079990410558
 
 Camera1.k1: 0.144916334597469
 Camera1.k2: -0.412109556782129
-Camera1.p1: 0
-Camera1.p2: 0
+Camera1.p1: 0.0
+Camera1.p2: 0.0
 
 Camera.width: 1280
 Camera.height: 720
