@@ -18,14 +18,14 @@ Camera1.k2: -0.412109556782129
 Camera1.p1: 0.0
 Camera1.p2: 0.0
 
-Camera1.width: 1280
-Camera1.height: 720
+Camera.width: 1280
+Camera.height: 720
 
 # Camera frames per second 
-Camera1.fps: 30.0
+Camera.fps: 30.0
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
-Camera1.RGB: 1
+Camera.RGB: 1
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters
