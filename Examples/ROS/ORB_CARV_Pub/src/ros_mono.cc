@@ -69,7 +69,9 @@ int main(int argc, char **argv)
     }    
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
+    ROS_INFO("CREATING SLAM SYSTEM ... ");
     ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR,true);
+    ROS_INFO("SLAM Created ... ");
 
     ImageGrabber igb(&SLAM);
 
@@ -92,7 +94,9 @@ int main(int argc, char **argv)
 }
 
 void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
-{
+{ 
+    ROS_INFO("Received an image with dimensions: %d x %d", msg->width, msg->height);
+
     // Copy the ros image message to cv::Mat.
     cv_bridge::CvImageConstPtr cv_ptr;
     try
