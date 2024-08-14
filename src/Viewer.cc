@@ -204,10 +204,6 @@ void Viewer::Run()
     pangolin::Var<bool> menuCameraView("menu.Camera View",true,true);
     pangolin::Var<bool> menuShowInertialGraph("menu.Show Inertial Graph",false,true);
     pangolin::Var<bool> menuLocalizationMode("menu.Localization Mode",false,true);
-    pangolin::Var<bool> menuReset("menu.Reset",false,false);
-    pangolin::Var<bool> menuStop("menu.Stop",false,false);
-    pangolin::Var<bool> menuStepByStep("menu.Step By Step",false,true);  // false, true
-    pangolin::Var<bool> menuStep("menu.Step",false,false);
 
     // ========== CARV ==========
     // CARV Edits (view menu items)
@@ -215,6 +211,11 @@ void Viewer::Run()
     pangolin::Var<bool> menuShowTexture("menu.Show Texture",false,true);
     pangolin::Var<bool> menuSaveCARV("menu.Save CARV",false,true);
     // ========== CARV ==========
+    
+    pangolin::Var<bool> menuReset("menu.Reset",false,false);
+    pangolin::Var<bool> menuStop("menu.Stop",false,false);
+    pangolin::Var<bool> menuStepByStep("menu.Step By Step",false,true);  // false, true
+    pangolin::Var<bool> menuStep("menu.Step",false,false);
 
     pangolin::Var<bool> menuShowOptLba("menu.Show LBA opt", false, true);
     // Define Camera Render Object (for view / scene browsing)
