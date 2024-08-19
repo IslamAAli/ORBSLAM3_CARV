@@ -1876,6 +1876,7 @@ void Tracking::Track()
     if ((mSensor == System::IMU_MONOCULAR || mSensor == System::IMU_STEREO || mSensor == System::IMU_RGBD) && mpLastKeyFrame)
         mCurrentFrame.SetNewBias(mpLastKeyFrame->GetImuBias());
 
+    cout << "HERE *#*#*#*#*#*" << endl;
     if(mState==NO_IMAGES_YET)
     {
         mState = NOT_INITIALIZED;
