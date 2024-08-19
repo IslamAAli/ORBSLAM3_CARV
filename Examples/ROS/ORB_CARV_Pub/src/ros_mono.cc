@@ -69,9 +69,7 @@ int main(int argc, char **argv)
     }    
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ROS_INFO("CREATING SLAM SYSTEM ... ");
     ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::MONOCULAR,true);
-    ROS_INFO("SLAM Created ... ");
 
     ImageGrabber igb(&SLAM);
 
@@ -95,12 +93,6 @@ int main(int argc, char **argv)
 
 void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
 { 
-    // ROS_INFO("Received an image with dimensions: %d x %d", msg->width, msg->height);
-    //     for (size_t i = 0; i < 10 && i < msg->data.size(); ++i) {
-    //     std::cout << static_cast<int>(msg->data[i]) << " ";
-    // }
-    // std::cout << std::endl;
-
     // Copy the ros image message to cv::Mat.
     cv_bridge::CvImageConstPtr cv_ptr;
     try
@@ -112,41 +104,44 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
         ROS_ERROR("cv_bridge exception: %s", e.what());
         return;
     }
+    ROS_INFO("HERE  ... #################################")
 
     mpSLAM->TrackMonocular(cv_ptr->image,cv_ptr->header.stamp.toSec());
-    // ORB_SLAM3::KeyFrame* pKF = mpSLAM->mpAtlas->GetCurrentMap()->newestKeyFrame;;
-    // if(pKF != NULL)
-    // {
-    //   int nowMaxId=mpSLAM->mpAtlas->GetCurrentMap()->GetMaxKFid();
-    //   if(nowMaxId > max_kfId)
-    //   {
-    //     cv::Mat TWC = CARV_HELPERS::se3ToCvMat(pKF->GetPoseInverse());//return TWC
 
-    //     cout<<"key frame mnId: "<<pKF->mnId<<endl;//int--------------------------------------debug
-    //     cout.precision(15);
-    //     cout<<"key frame timestamp"<<std::fixed<<pKF->mTimeStamp<<endl;//double--------------------------------------debug
-    //     cout<<"ros mono MyCurrent Key Frame. camera center: "<<endl<<pKF->GetCameraCenter()<<endl;//--------------------------------debug
+    ROS_INFO("TESTING ... #################################")
+    ORB_SLAM3::KeyFrame* pKF = mpSLAM->mpAtlas->GetCurrentMap()->newestKeyFrame;;
+    if(pKF != NULL)
+    {
+      int nowMaxId=mpSLAM->mpAtlas->GetCurrentMap()->GetMaxKFid();
+      if(nowMaxId > max_kfId)
+      {
+        cv::Mat TWC = CARV_HELPERS::se3ToCvMat(pKF->GetPoseInverse());//return TWC
 
-    //     std_msgs::String msg;
-    //     std::stringstream ss;
-    //     ss<<pKF->mnId<<",";
-    //     ss<<std::setprecision(15)<<pKF->mTimeStamp<<",";
-    //     for(int ti=0;ti<TWC.rows;ti++)
-    //     {
-    //       for(int tj=0;tj<TWC.cols;tj++)
-    //       {
-    //         std::ostringstream ssss;
-    //         ssss << TWC.at<float>(ti,tj);
-    //         ss<<ssss.str()<<",";
-    //       }
-    //     }
-    //     msg.data = ss.str();
-    //     pubTask.publish(msg);
-    //     max_kfId=nowMaxId;
-    //   }
-    // }
-    // std_msgs::String msgScript;  //publish CARV model scripts
-    // msgScript.data = mpSLAM->mpModeler->mTranscriptInterface.m_SFMTranscript.getNewCommand();
-    // if(msgScript.data !="")
-    //   pubCARVScripts.publish(msgScript);
+        cout<<"key frame mnId: "<<pKF->mnId<<endl;//int--------------------------------------debug
+        cout.precision(15);
+        cout<<"key frame timestamp"<<std::fixed<<pKF->mTimeStamp<<endl;//double--------------------------------------debug
+        cout<<"ros mono MyCurrent Key Frame. camera center: "<<endl<<pKF->GetCameraCenter()<<endl;//--------------------------------debug
+
+        std_msgs::String msg;
+        std::stringstream ss;
+        ss<<pKF->mnId<<",";
+        ss<<std::setprecision(15)<<pKF->mTimeStamp<<",";
+        for(int ti=0;ti<TWC.rows;ti++)
+        {
+          for(int tj=0;tj<TWC.cols;tj++)
+          {
+            std::ostringstream ssss;
+            ssss << TWC.at<float>(ti,tj);
+            ss<<ssss.str()<<",";
+          }
+        }
+        msg.data = ss.str();
+        pubTask.publish(msg);
+        max_kfId=nowMaxId;
+      }
+    }
+    std_msgs::String msgScript;  //publish CARV model scripts
+    msgScript.data = mpSLAM->mpModeler->mTranscriptInterface.m_SFMTranscript.getNewCommand();
+    if(msgScript.data !="")
+      pubCARVScripts.publish(msgScript);
 }
