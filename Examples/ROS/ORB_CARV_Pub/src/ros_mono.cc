@@ -102,8 +102,6 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
     try
     {
         cv_ptr = cv_bridge::toCvShare(msg);
-        cv::imshow("Received Image", cv_ptr->image);
-        cv::waitKey(30);  // Wait for 30 ms to show the image
     }
     catch (cv_bridge::Exception& e)
     {
