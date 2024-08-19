@@ -207,9 +207,9 @@ void Viewer::Run()
 
     // ========== CARV ==========
     // CARV Edits (view menu items)
-    // pangolin::Var<bool> menuShowModel("menu.Show Model",true,true);
-    // pangolin::Var<bool> menuShowTexture("menu.Show Texture",false,true);
-    // pangolin::Var<bool> menuSaveCARV("menu.Save CARV",false,true);
+    pangolin::Var<bool> menuShowModel("menu.Show Model",true,true);
+    pangolin::Var<bool> menuShowTexture("menu.Show Texture",false,true);
+    pangolin::Var<bool> menuSaveCARV("menu.Save CARV",false,true);
     // ========== CARV ==========
     
     pangolin::Var<bool> menuReset("menu.Reset",false,false);
@@ -221,27 +221,22 @@ void Viewer::Run()
     // Define Camera Render Object (for view / scene browsing)
     //TODO: map vs. cam edits
     pangolin::OpenGlRenderState s_cam(
-                pangolin::ProjectionMatrix(1024,768,mViewpointF,mViewpointF,512,389,0.1,1000),
-                pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0)
+                // pangolin::ProjectionMatrix(1024,768,mViewpointF,mViewpointF,512,389,0.1,1000),
+                // pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0)
 
                 // ========== CARV ==========
                 // carv: using calibrated camera center and focal length
-                // pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000),
-                // pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0)
+                pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000),
+                pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0)
                 // ========== CARV ==========
                 );
 
-    // Add named OpenGL viewport to window and provide 3D Handler
-    pangolin::View& d_cam = pangolin::CreateDisplay()
-            .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -1024.0f/768.0f)
-            .SetHandler(new pangolin::Handler3D(s_cam));
-            
     // CARV Edit
     // ========== CARV ==========
     // Add named OpenGL viewport to window and provide 3D Handler
-    // pangolin::View& d_cam = pangolin::CreateDisplay()
-    //         .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -mImageWidth/mImageHeight)
-    //         .SetHandler(new pangolin::Handler3D(s_cam));
+    pangolin::View& d_cam = pangolin::CreateDisplay()
+            .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -mImageWidth/mImageHeight)
+            .SetHandler(new pangolin::Handler3D(s_cam));
     // ========== CARV ==========
 
     pangolin::OpenGlMatrix Twc, Twr;
@@ -264,14 +259,14 @@ void Viewer::Run()
 
     cout << "Starting the Viewer" << endl;
 
-    // // ========== CARV ==========
-    // // // carv: camera close up view
-    // pangolin::OpenGlMatrix projectionAbove = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mViewpointF,mViewpointF,
-    //                                                                 mImageWidth/2,mImageHeight/2,0.1,1000);
-    // pangolin::OpenGlMatrix projectionCamera = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000);
-    // pangolin::OpenGlMatrix viewAbove = pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0);
-    // pangolin::OpenGlMatrix viewCamera = pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0);
-    // // ========== CARV ==========
+    // ========== CARV ==========
+    // // carv: camera close up view
+    pangolin::OpenGlMatrix projectionAbove = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mViewpointF,mViewpointF,
+                                                                    mImageWidth/2,mImageHeight/2,0.1,1000);
+    pangolin::OpenGlMatrix projectionCamera = pangolin::ProjectionMatrix(mImageWidth,mImageHeight,mfx,mfy,mcx,mcy,0.1,1000);
+    pangolin::OpenGlMatrix viewAbove = pangolin::ModelViewLookAt(mViewpointX,mViewpointY,mViewpointZ, 0,0,0,0.0,-1.0, 0.0);
+    pangolin::OpenGlMatrix viewCamera = pangolin::ModelViewLookAt(0,0,0, 0,0,1, 0.0,-1.0, 0.0);
+    // ========== CARV ==========
 
     while(1)
     {
@@ -362,18 +357,18 @@ void Viewer::Run()
 
         // ========== CARV ==========
         // carv: setup viewpoint to see model
-        // if(menuCameraView && !bCameraView)
-        // {
-        //     s_cam.SetProjectionMatrix(projectionCamera);
-        //     s_cam.SetModelViewMatrix(viewCamera);
-        //     bCameraView = true;
-        // }
-        // else if(!menuCameraView && bCameraView)
-        // {
-        //     s_cam.SetProjectionMatrix(projectionAbove);
-        //     s_cam.SetModelViewMatrix(viewAbove);
-        //     bCameraView = false;
-        // }
+        if(menuCameraView && !bCameraView)
+        {
+            s_cam.SetProjectionMatrix(projectionCamera);
+            s_cam.SetModelViewMatrix(viewCamera);
+            bCameraView = true;
+        }
+        else if(!menuCameraView && bCameraView)
+        {
+            s_cam.SetProjectionMatrix(projectionAbove);
+            s_cam.SetModelViewMatrix(viewAbove);
+            bCameraView = false;
+        }
         // ========== CARV ==========
 
         d_cam.Activate(s_cam);
@@ -386,28 +381,28 @@ void Viewer::Run()
             mpMapDrawer->DrawMapPoints();
             // ========== CARV ==========
             // carv: show model points
-            // mpModelDrawer->DrawModelPoints();
+            mpModelDrawer->DrawModelPoints();
             // ========== CARV ==========
         }
 
         // ========== CARV ==========
         // carv: show model or triangle with light from camera
-        // CheckGlDieOnError()
-        // if(menuShowModel && menuShowTexture) {
-        //     mpModelDrawer->DrawModel(mbRGB);
-        // }
-        // else if (menuShowModel && !menuShowTexture) {
-        //     mpModelDrawer->DrawTriangles(Twc);
-        // }
-        // else if (!menuShowModel && menuShowTexture) {
-        //     mpModelDrawer->DrawFrame(mbRGB);
-        // }
-        // if(menuSaveCARV)
-        // {
-        //     mpSystem->mpModeler->writeToFile("chris_CARV_Files");
-        //     menuSaveCARV = false;
-        // }
-        // CheckGlDieOnError()
+        CheckGlDieOnError()
+        if(menuShowModel && menuShowTexture) {
+            mpModelDrawer->DrawModel(mbRGB);
+        }
+        else if (menuShowModel && !menuShowTexture) {
+            mpModelDrawer->DrawTriangles(Twc);
+        }
+        else if (!menuShowModel && menuShowTexture) {
+            mpModelDrawer->DrawFrame(mbRGB);
+        }
+        if(menuSaveCARV)
+        {
+            mpSystem->mpModeler->writeToFile("chris_CARV_Files");
+            menuSaveCARV = false;
+        }
+        CheckGlDieOnError()
         // ========== CARV ==========
 
         pangolin::FinishFrame();
@@ -430,6 +425,7 @@ void Viewer::Run()
             cv::resize(toShow, toShow, cv::Size(width, height));
         }
 
+        cout << toShow << endl;
         cv::imshow("ORB-SLAM3: Current Frame",toShow);
         cv::waitKey(mT);
 
@@ -450,9 +446,9 @@ void Viewer::Run()
 
             // ========== CARV ==========
             // carv: reset to default
-            // menuCameraView = true;
-            // menuShowModel = true;
-            // menuShowTexture = true;
+            menuCameraView = true;
+            menuShowModel = true;
+            menuShowTexture = true;
             // ========== CARV ==========
         }
 
