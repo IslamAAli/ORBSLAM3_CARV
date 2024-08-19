@@ -2540,6 +2540,7 @@ void Tracking::MonocularInitialization()
             CreateInitialMapMonocular();
         }
     }
+    cout << "initialization done" << endl; 
 }
 
 

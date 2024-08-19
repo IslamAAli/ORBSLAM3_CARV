@@ -434,7 +434,6 @@ void FrameDrawer::Update(Tracking *pTracker)
 
     }
     mState=static_cast<int>(pTracker->mLastProcessedState);
-    cout << "state in frame drawer:" << mState << endl;
 }
 
 } //namespace ORB_SLAM
