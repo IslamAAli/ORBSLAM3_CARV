@@ -1926,13 +1926,15 @@ void Tracking::Track()
             MonocularInitialization();
         }
 
-        //mpFrameDrawer->Update(this);
+        mpFrameDrawer->Update(this);
 
         if(mState!=OK) // If rightly initialized, mState=OK
         {
             mLastFrame = Frame(mCurrentFrame);
             return;
         }
+
+        cout << "HERE HERE " << endl;
 
         if(mpAtlas->GetAllMaps().size() == 1)
         {
