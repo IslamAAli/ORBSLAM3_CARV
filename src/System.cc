@@ -417,7 +417,7 @@ Sophus::SE3f System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const
 
 Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, const vector<IMU::Point>& vImuMeas, string filename)
 {
-
+    cout << im << endl;
     {
         unique_lock<mutex> lock(mMutexReset);
         if(mbShutDown)
