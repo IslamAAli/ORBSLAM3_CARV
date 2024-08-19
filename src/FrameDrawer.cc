@@ -326,6 +326,8 @@ cv::Mat FrameDrawer::DrawRightFrame(float imageScale)
     return imWithInfo;
 }
 
+
+
 void FrameDrawer::DrawTextInfo(cv::Mat &im, int nState, cv::Mat &imText)
 {
     stringstream s;
