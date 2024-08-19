@@ -104,11 +104,11 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
         ROS_ERROR("cv_bridge exception: %s", e.what());
         return;
     }
-    ROS_INFO("HERE  ... #################################")
+    ROS_INFO("HERE  ... #################################");
 
     mpSLAM->TrackMonocular(cv_ptr->image,cv_ptr->header.stamp.toSec());
 
-    ROS_INFO("TESTING ... #################################")
+    ROS_INFO("TESTING ... #################################");
     ORB_SLAM3::KeyFrame* pKF = mpSLAM->mpAtlas->GetCurrentMap()->newestKeyFrame;;
     if(pKF != NULL)
     {
