@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     ImageGrabber igb(&SLAM);
 
     ros::NodeHandle nodeHandler;
-    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage,&igb);
+    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 10, &ImageGrabber::GrabImage,&igb);
 
     pubTask = nodeHandler.advertise<std_msgs::String>("/chris/twc", 1);
     pubCARVScripts = nodeHandler.advertise<std_msgs::String>("/carv/script", 1);
