@@ -96,7 +96,10 @@ int main(int argc, char **argv)
 void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
 { 
     ROS_INFO("Received an image with dimensions: %d x %d", msg->width, msg->height);
-    ROS_INFO(msg);
+        for (size_t i = 0; i < 10 && i < msg->data.size(); ++i) {
+        std::cout << static_cast<int>(msg->data[i]) << " ";
+    }
+    std::cout << std::endl;
 
     // Copy the ros image message to cv::Mat.
     cv_bridge::CvImageConstPtr cv_ptr;
