@@ -147,3 +147,6 @@ target_link_libraries(Stereo_Inertial
 ${LIBS}
 )
 endif()
+
+
+rosbuild_install_all_files(launch ${PROJECT_NAME}/launch)

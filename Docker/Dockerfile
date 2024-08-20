@@ -51,6 +51,7 @@ RUN apt-get update && apt-get install -y \
 		git \
 		unzip \
 		curl \
+		gdb \
 		software-properties-common
 		
 
