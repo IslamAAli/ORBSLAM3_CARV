@@ -149,4 +149,8 @@ ${LIBS}
 endif()
 
 
-rosbuild_install_all_files(launch ${PROJECT_NAME}/launch)
+# Install the launch files
+install(DIRECTORY launch/
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/launch
+  FILES_MATCHING PATTERN "*.launch"
+)
